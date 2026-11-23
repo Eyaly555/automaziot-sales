@@ -1,0 +1,21 @@
+/* incoming — arrival cards. Placement and look are custom properties; the stack sits at the top end by default. */
+.inc { position: fixed; z-index: var(--part-inc-z, 50); inset-block-start: var(--part-inc-top, 12px); inset-inline-end: var(--part-inc-side, 12px); inline-size: min(380px, calc(100vw - 24px)); display: grid; gap: 8px; pointer-events: none; font-family: var(--part-font, inherit); }
+.inc__card { pointer-events: auto; display: grid; grid-template-columns: auto 1fr; gap: 6px 12px; padding: 12px; border-radius: var(--part-radius, 12px); background: var(--part-surface, #fff); color: var(--part-ink, #1a1a1a); box-shadow: var(--part-shadow, 0 8px 28px rgba(0, 0, 0, .18)); border: 1px solid var(--part-line, #e3e3e3); opacity: 0; transform: translateY(-12px); transition: opacity .2s, transform .2s; }
+.inc__card.is-in { opacity: 1; transform: none; }
+.inc__card.is-out { opacity: 0; transform: translateY(-8px); }
+.inc__icon { inline-size: 44px; block-size: 44px; border-radius: 50%; display: grid; place-items: center; background: var(--part-inc-icon-bg, #eef1f4); color: var(--part-inc-icon, #333); }
+.inc__icon svg { inline-size: 22px; block-size: 22px; }
+.inc__card--call .inc__icon { background: var(--part-inc-call, #1e8e3e); color: #fff; animation: inc-ring 1.2s infinite; }
+@keyframes inc-ring { 0% { box-shadow: 0 0 0 0 rgba(30, 142, 62, .5); } 70% { box-shadow: 0 0 0 12px rgba(30, 142, 62, 0); } 100% { box-shadow: 0 0 0 0 rgba(30, 142, 62, 0); } }
+@media (prefers-reduced-motion: reduce) { .inc__card { transition: none; } .inc__card--call .inc__icon { animation: none; } }
+.inc__body { display: grid; gap: 2px; min-inline-size: 0; }
+.inc__kind { font-size: 12px; color: var(--part-muted, #666); }
+.inc__title { font-size: 16px; overflow-wrap: anywhere; }
+.inc__detail { font-size: 14px; overflow-wrap: anywhere; }
+.inc__meta { font-size: 12px; color: var(--part-muted, #666); }
+.inc__acts { grid-column: 1 / -1; display: flex; gap: 8px; flex-wrap: wrap; }
+.inc__act, .inc__x { min-block-size: 44px; min-inline-size: 44px; padding-inline: 14px; font: inherit; border-radius: var(--part-radius, 8px); border: 1px solid var(--part-line, #ccc); background: var(--part-surface, #fff); color: inherit; cursor: pointer; }
+.inc__act--primary { background: var(--part-accent, #1f1f1f); color: var(--part-on-accent, #fff); border-color: transparent; }
+.inc__card--call .inc__act--primary { background: var(--part-inc-call, #1e8e3e); }
+.inc__x { margin-inline-start: auto; font-size: 20px; padding: 0; }
+.inc button:focus-visible { outline: 2px solid var(--part-focus, #1a73e8); outline-offset: 2px; }

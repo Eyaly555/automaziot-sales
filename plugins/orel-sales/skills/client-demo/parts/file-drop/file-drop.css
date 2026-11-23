@@ -1,0 +1,22 @@
+/* file-drop — structure only. The real <input type=file> is inside the label (keyboard and screen reader reach it). */
+.fdrop { display: grid; gap: 6px; font-family: var(--part-font, inherit); color: var(--part-ink, #1a1a1a); }
+.fdrop [hidden] { display: none !important; }
+.fdrop__zone { position: relative; display: grid; justify-items: center; gap: 4px; padding: 18px 12px; min-block-size: 44px; border: 1.5px dashed var(--part-line, #a9a9a9); border-radius: var(--part-radius, 10px); background: var(--part-surface, #fff); text-align: center; cursor: pointer; }
+.fdrop__zone.is-over { border-color: var(--part-accent, #1f1f1f); background: var(--part-fdrop-over, #f3f6fb); }
+.fdrop__zone:focus-within { outline: 2px solid var(--part-focus, #1a73e8); outline-offset: 2px; }
+.fdrop__input { position: absolute; inline-size: 1px; block-size: 1px; opacity: 0; }
+.fdrop__label { font-weight: 600; }
+.fdrop__hint { color: var(--part-muted, #666); }
+.fdrop__msg { margin: 0; font-size: 13px; color: var(--part-bad, #b3261e); min-block-size: 0; }
+.fdrop__msg:empty { display: none; }
+.fdrop__list { list-style: none; margin: 0; padding: 0; display: grid; gap: 6px; }
+.fdrop__file { display: grid; grid-template-columns: 44px 1fr auto 44px; gap: 10px; align-items: center; padding: 4px; border-radius: var(--part-radius, 8px); background: var(--part-fdrop-row, #f6f6f6); }
+.fdrop__thumb, .fdrop__ext { inline-size: 44px; block-size: 44px; border-radius: 6px; object-fit: cover; display: grid; place-items: center; font-size: 11px; font-weight: 700; background: var(--part-fdrop-ext, #e3e6ea); }
+.fdrop__name { min-inline-size: 0; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; font-size: 14px; }
+.fdrop__size { color: var(--part-muted, #666); direction: ltr; unicode-bidi: isolate; }
+.fdrop__rm { inline-size: 44px; block-size: 44px; border: 0; border-radius: 6px; background: none; font-size: 20px; cursor: pointer; color: inherit; }
+.fdrop__rm:focus-visible { outline: 2px solid var(--part-focus, #1a73e8); }
+.fdrop--compact { display: inline-grid; }
+.fdrop--compact .fdrop__zone { grid-auto-flow: column; gap: 6px; padding: 0 12px; min-block-size: 44px; border-style: solid; border-width: 1px; }
+.fdrop--compact .fdrop__list { display: none; }
+.fdrop__badge { min-inline-size: 22px; block-size: 22px; padding-inline: 6px; border-radius: 99px; display: grid; place-items: center; font-size: 12px; background: var(--part-accent, #1f1f1f); color: var(--part-on-accent, #fff); }

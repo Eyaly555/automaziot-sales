@@ -1,0 +1,33 @@
+<!doctype html>
+<html lang="he" dir="rtl">
+<head>
+<meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
+<title>offline-queue · דוגמה</title>
+<link rel="stylesheet" href="./offline-queue.css">
+<style>
+  body { font-family: system-ui, "Segoe UI", Arial, sans-serif; margin: 0; padding: 16px; background: #f2f3f1; color: #1d1d1d; }
+  main { max-inline-size: 640px; margin-inline: auto; display: grid; gap: 12px; }
+  h1 { font-size: 20px; margin: 0; } p { margin: 0; color: #555; }
+  .bar { display: flex; flex-wrap: wrap; gap: 8px; }
+  .bar button { min-block-size: 44px; padding-inline: 14px; font: inherit; border: 1px solid #555; border-radius: 8px; background: #fff; cursor: pointer; }
+</style>
+</head>
+<body>
+<main>
+  <h1>«מדבירי הצפון» — הדברה בדויה: טכנאי במרתף בלי קליטה</h1>
+  <p>נתקו את הקליטה, תעדו שלושה דברים, וחברו שוב: הכול נשלח לפי הסדר, עם ניסיון חוזר אחד.</p>
+  <div class="bar"><button type="button" id="photo">צילום מלכודת</button><button type="button" id="form">טופס ביקור</button><button type="button" id="sign">חתימת לקוח</button></div>
+  <div id="status"></div>
+</main>
+<script type="module">
+  import { createOfflineQueue, mountQueueStatus } from "./offline-queue.js";
+  const q = createOfflineQueue({ key: null, failFirst: (it) => it.kind === "photo", upload: () => new Promise((r) => setTimeout(r, 450)) });
+  mountQueueStatus(document.getElementById("status"), q);
+  let n = 0;
+  document.getElementById("photo").onclick = () => q.add({ label: `צילום מלכודת ${++n}`, kind: "photo" });
+  document.getElementById("form").onclick = () => q.add({ label: "טופס ביקור — מחסן 3", kind: "form" });
+  document.getElementById("sign").onclick = () => q.add({ label: "חתימת אחראי המבנה", kind: "signature" });
+</script>
+<script type="application/json" id="verify">[{"click": ".oq__switch"}, {"text": [".oq__switch", "ללא קליטה"]}, {"click": "#photo"}, {"click": "#form"}, {"click": "#sign"}, {"count": [".oq__item--local", 3]}, {"click": ".oq__switch"}, {"text": [".oq__sum", "הכול נשלח"]}, {"count": [".oq__item--sent", 3]}]</script>
+</body>
+</html>

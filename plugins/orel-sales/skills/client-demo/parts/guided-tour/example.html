@@ -1,0 +1,41 @@
+<!doctype html>
+<html lang="he" dir="rtl">
+<head>
+<meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
+<title>guided-tour · דוגמה</title>
+<link rel="stylesheet" href="./guided-tour.css">
+<style>
+  body { font-family: system-ui, "Segoe UI", Arial, sans-serif; margin: 0; padding: 16px; background: #f4f5f7; color: #1d1d1d; }
+  main { max-inline-size: 980px; margin-inline: auto; display: grid; gap: 12px; }
+  header { display: flex; justify-content: space-between; align-items: center; gap: 8px; flex-wrap: wrap; }
+  h1 { font-size: 20px; margin: 0; }
+  button.start { min-block-size: 44px; padding-inline: 16px; font: inherit; border-radius: 8px; border: 1px solid #333; background: #fff; cursor: pointer; }
+  .grid { display: grid; gap: 10px; grid-template-columns: repeat(auto-fit, minmax(220px, 1fr)); }
+  .box { background: #fff; border: 1px solid #ddd; border-radius: 10px; padding: 14px; min-block-size: 90px; }
+  #status { color: #555; }
+</style>
+</head>
+<body>
+<main>
+  <header><h1>«גלידה על הגלגלים» — עגלות גלידה בדויות</h1><button class="start" id="go" type="button">סיור של דקה</button></header>
+  <div class="grid">
+    <section class="box" id="map"><b>איפה העגלות עכשיו</b><br>6 עגלות בדרך, 2 בחניון.</section>
+    <section class="box" id="stock"><b>מלאי בכל עגלה</b><br>עגלה 4 תיגמר מוניטה בעוד שעה.</section>
+    <section class="box" id="events"><b>אירועים מוזמנים</b><br>בר מצווה ביום חמישי, 120 מנות.</section>
+  </div>
+  <p id="status">הסיור עוד לא רץ.</p>
+</main>
+<script type="module">
+  import { createTour } from "./guided-tour.js";
+  const status = document.getElementById("status");
+  const tour = createTour([
+    { target: null, title: "ברוכים הבאים", body: "שלושה מסכים, דקה אחת. אפשר לצאת בכל רגע עם Esc." },
+    { target: "#map", title: "איפה העגלות", body: "כל עגלה על המפה, עם המסלול של היום והעצירה הבאה." },
+    { target: "#stock", title: "מה ייגמר קודם", body: "המלאי יורד לבד עם כל מכירה בקופה, והתראה יוצאת לפני שנגמר." },
+    { target: "#events", title: "אירועים", body: "הזמנה לאירוע מקצה עגלה ומלאי, ושולחת אישור ללקוח." },
+  ], { onEnd: (r) => { status.textContent = r === "done" ? "הסיור הסתיים." : "הסיור נסגר."; } });
+  document.getElementById("go").addEventListener("click", () => tour.start());
+</script>
+<script type="application/json" id="verify">[{"click": "#go"}, {"text": [".gtour__title", "ברוכים הבאים"]}, {"click": ".gtour__btn--primary"}, {"text": [".gtour__title", "איפה העגלות"]}, {"click": ".gtour__btn--primary"}, {"click": ".gtour__btn--primary"}, {"click": ".gtour__btn--primary"}, {"text": ["#status", "הסיור הסתיים"]}, {"count": [".gtour__card", 0]}]</script>
+</body>
+</html>

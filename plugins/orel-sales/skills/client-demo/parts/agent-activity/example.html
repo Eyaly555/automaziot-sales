@@ -1,0 +1,40 @@
+<!doctype html>
+<html lang="he" dir="rtl">
+<head>
+<meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
+<title>agent-activity · דוגמה</title>
+<link rel="stylesheet" href="./agent-activity.css">
+<style>
+  body { font-family: system-ui, "Segoe UI", Arial, sans-serif; margin: 0; padding: 16px; background: #f1f3f5; color: #1d1d1d; }
+  main { max-inline-size: 1000px; margin-inline: auto; display: grid; gap: 16px; grid-template-columns: minmax(0, 1fr) minmax(0, 1fr); align-items: start; }
+  @media (max-width: 760px) { main { grid-template-columns: 1fr; } }
+  h1 { font-size: 20px; margin: 0; grid-column: 1 / -1; }
+  .side { display: grid; gap: 10px; }
+  .side button { min-block-size: 44px; font: inherit; border-radius: 8px; border: 1px solid #444; background: #fff; cursor: pointer; }
+  #record { background: #fff; border: 1px solid #ddd; border-radius: 10px; padding: 12px; min-block-size: 60px; }
+</style>
+</head>
+<body>
+<main>
+  <h1>«טיפה» — אינסטלטור בדוי: מה הסוכן עשה הלילה</h1>
+  <div id="feed"></div>
+  <div class="side">
+    <button type="button" id="wa">לקוח כתב בוואטסאפ</button>
+    <button type="button" id="phone">לקוחה התקשרה</button>
+    <div id="record">כאן ייפתח הרשומה שהסוכן יצר.</div>
+  </div>
+</main>
+<script type="module">
+  import { createAgentActivity } from "./agent-activity.js";
+  const rec = document.getElementById("record");
+  const feed = createAgentActivity(document.getElementById("feed"), { stepMs: 250, onOpen: (w) => { rec.textContent = `נפתח: ${w.label} (${w.kind} ${w.id})`; } });
+  document.getElementById("wa").onclick = () => feed.record({ channel: "whatsapp", who: "יואב ענבר", at: "22:41", said: "יש נזילה מתחת לכיור במטבח, אפשר מחר בבוקר?",
+    steps: [{ label: "זוהה", say: "לקוח קיים, 2 ביקורים קודמים" }, { label: "הובן", say: "נזילה — לא דחוף, בקשה למחר בבוקר" }, { label: "נבדק", say: "יש חלון פנוי מחר 08:00–10:00" }, { label: "בוצע", say: "נקבע ביקור ונשלח אישור" }],
+    writes: [{ label: "קריאת שירות 1182", kind: "קריאה", id: "1182" }, { label: "ביקור מחר 08:00", kind: "יומן", id: "v-77" }] });
+  document.getElementById("phone").onclick = () => feed.record({ channel: "voice", who: "חגית עמר", at: "23:05", said: "המים לא מפסיקים לזרום מהדוד!",
+    steps: [{ label: "זוהה", say: "לקוחה חדשה" }, { label: "הובן", say: "פיצוץ בדוד — חירום", state: "warn" }, { label: "בוצע", say: "הוזעק התורן" }],
+    writes: [{ label: "קריאת חירום 1183", kind: "קריאה", id: "1183" }], handoff: { to: "התורן הלילה", why: "חירום" } });
+</script>
+<script type="application/json" id="verify">[{"click": "#wa"}, {"count": [".agact__turn", 1]}, {"countMin": [".agact__turn.is-done", 1]}, {"click": ".agact__door"}, {"text": ["#record", "קריאת שירות 1182"]}, {"click": "#phone"}, {"count": [".agact__turn", 2]}, {"text": [".agact__count", "2"]}]</script>
+</body>
+</html>

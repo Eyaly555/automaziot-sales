@@ -1,0 +1,50 @@
+<!doctype html>
+<html lang="he" dir="rtl">
+<head>
+<meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
+<title>whatsapp-thread · דוגמה</title>
+<link rel="stylesheet" href="./whatsapp-thread.css">
+<style>
+  body { font-family: system-ui, "Segoe UI", Arial, sans-serif; margin: 0; padding: 16px; background: #f3f1ec; color: #1d1d1d; }
+  main { max-inline-size: 980px; margin-inline: auto; display: grid; gap: 16px; grid-template-columns: minmax(0, 420px) minmax(0, 1fr); align-items: start; }
+  @media (max-width: 760px) { main { grid-template-columns: 1fr; } }
+  h1 { font-size: 20px; margin: 0 0 6px; grid-column: 1 / -1; }
+  aside { background: #fff; border-radius: 10px; padding: 14px; border: 1px solid #e2e2e2; }
+  aside button { min-block-size: 44px; padding-inline: 14px; font: inherit; border-radius: 8px; border: 1px solid #555; background: #fff; cursor: pointer; margin-block-end: 8px; }
+  #log { font-size: 14px; color: #444; padding-inline-start: 18px; }
+</style>
+</head>
+<body>
+<main>
+  <h1>«אופה בשכונה» — מאפייה בדויה, ההזמנות בוואטסאפ</h1>
+  <div id="phone"></div>
+  <aside>
+    <button id="play" type="button">▶ הצגת שיחה מוקלטת</button>
+    <p>או כתבו בעצמכם — המענה כאן מקומי. במקום הפונקציה <code>send</code> אפשר לחבר נקודת קצה של סוכן אמיתי.</p>
+    <ol id="log"></ol>
+  </aside>
+</main>
+<script type="module">
+  import { createWhatsAppThread } from "./whatsapp-thread.js";
+  const log = document.getElementById("log");
+  // A local stand-in for the agent. In a real demo: send: (text) => myAgent.reply(text)
+  const reply = (t) => /חלה|חלות/.test(t) ? { text: "יש לנו חלה מתוקה ב־18 ₪ וחלה עם שומשום ב־20 ₪. כמה לשים בצד ליום שישי?", quick: ["2 מתוקות", "אחת עם שומשום"] }
+    : /\d|מתוק|שומשום/.test(t) ? ["רשמתי ✔", "ההזמנה תחכה לך ביום שישי מ־07:00. שם לאיסוף?"]
+    : { text: "שלום! אפשר להזמין חלות, עוגות ומאפים ליום שישי. מה בא לך?", quick: ["אילו חלות יש?", "עוגת שמרים"] };
+  const wa = createWhatsAppThread(document.getElementById("phone"), {
+    title: "אופה בשכונה", subtitle: "חשבון עסקי", initials: "א", startAt: "08:12",
+    send: async (text) => reply(text),
+    quick: ["אילו חלות יש?", "שעות פתיחה"],
+    attachments: [{ name: "רשימת-הזמנה.pdf", kind: "doc", size: 182000 }, { name: "עוגה-ליום-הולדת.jpg", kind: "image" }],
+  });
+  wa.on("message", (m) => { const li = document.createElement("li"); li.textContent = `${m.from === "me" ? "לקוח" : m.from === "them" ? "מאפייה" : "הערה"}: ${m.text || m.attachment?.name}`; log.appendChild(li); });
+  document.getElementById("play").addEventListener("click", () => { wa.clear(); wa.play([
+    { from: "me", text: "היי, אפשר להזמין עוגת גבינה לשבת?" },
+    { from: "them", text: "בטח! עוגת גבינה אפויה 24 ס״מ ב־95 ₪. לאסוף ביום שישי?", wait: 300 },
+    { from: "me", text: "כן, ב־10:00", wait: 600 },
+    { from: "them", text: "סגור. שמרתי לך אחת 🙂", quick: ["תודה!"] },
+  ]); });
+</script>
+<script type="application/json" id="verify">[{"fill": [".wat__in", "אילו חלות יש?"]}, {"press": [".wat__in", "Enter"]}, {"countMin": [".wat__msg--out", 1]}, {"text": [".wat__msg--in", "חלה מתוקה"]}, {"countMin": [".wat__tick[data-wat-tick=read]", 1]}, {"click": ".wat__chip"}, {"countMin": [".wat__msg--out", 2]}, {"fill": [".wat__in", "שעות פתיחה?"]}, {"press": [".wat__in", "Enter"]}, {"fill": [".wat__in", "ועוגת שמרים"]}, {"press": [".wat__in", "Enter"]}, {"countMin": [".wat__msg--out", 4]}, {"countMin": [".wat__msg--in", 5]}, {"lastIs": [".wat__msg", "wat__msg--in"]}]</script>
+</body>
+</html>

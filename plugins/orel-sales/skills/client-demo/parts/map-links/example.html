@@ -1,0 +1,31 @@
+<!doctype html>
+<html lang="he" dir="rtl">
+<head>
+<meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
+<title>map-links · דוגמה</title>
+<link rel="stylesheet" href="./map-links.css">
+<style>
+  body { font-family: system-ui, "Segoe UI", Arial, sans-serif; margin: 0; padding: 16px; background: #f1f2f0; color: #1d1d1d; }
+  main { max-inline-size: 640px; margin-inline: auto; display: grid; gap: 12px; }
+  h1 { font-size: 20px; margin: 0; } .job { background: #fff; border: 1px solid #ddd; border-radius: 10px; padding: 14px; display: grid; gap: 8px; }
+  .job h2 { font-size: 16px; margin: 0; } button { min-block-size: 44px; font: inherit; padding-inline: 14px; border: 1px solid #555; border-radius: 8px; background: #fff; cursor: pointer; justify-self: start; }
+  #out { white-space: pre-wrap; font-size: 13px; color: #444; direction: ltr; text-align: start; overflow-wrap: anywhere; }
+</style>
+</head>
+<body>
+<main>
+  <h1>«שליחי הגליל» — חברת שליחויות בדויה: העצירות של היום</h1>
+  <section class="job"><h2>1 · חבילה לחנות הספרים</h2><div id="a"></div></section>
+  <section class="job"><h2>2 · מסירה בבסיס — ניווט לפי תיאום</h2><div id="b"></div></section>
+  <button type="button" id="show">מה הקישורים?</button>
+  <pre id="out"></pre>
+</main>
+<script type="module">
+  import { mountActions } from "./map-links.js";
+  const a = mountActions(document.getElementById("a"), { place: { lat: 32.7019, lng: 35.3033, address: "רח׳ הגליל 18, נוף הגליל" }, phone: "054-555-0123", whatsapp: { phone: "054-555-0123", text: "שלום, השליח בדרך, מגיע בעוד כ־10 דקות." } });
+  mountActions(document.getElementById("b"), { place: { note: "אתר סגור — ניווט לפי תיאום מראש עם השער" }, phone: "04-555-0144" });
+  document.getElementById("show").onclick = () => { document.getElementById("out").textContent = Object.entries(a.links).map(([k, v]) => `${k}: ${v}`).join("\n"); };
+</script>
+<script type="application/json" id="verify">[{"count": ["#a .mlinks__a", 4]}, {"count": ["#b .mlinks__a--waze", 0]}, {"text": ["#b .mlinks__note", "לפי תיאום"]}, {"click": "#show"}, {"text": ["#out", "tel:+972545550123"]}, {"text": ["#out", "waze.com/ul?ll=32.7019,35.3033"]}]</script>
+</body>
+</html>

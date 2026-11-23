@@ -1,0 +1,19 @@
+/* device-frame — a plain, true-to-life bezel. Size, colour and radius are custom properties. */
+.dframe { margin: 0; display: grid; justify-items: center; gap: 8px; font-family: var(--part-font, inherit); }
+.dframe__body { position: relative; box-sizing: border-box; display: flex; flex-direction: column; overflow: hidden; background: var(--part-dframe-screen, #fff); border: var(--part-dframe-bezel, 12px) solid var(--part-dframe-color, #16181b); box-shadow: 0 0 0 1px var(--part-dframe-edge, #3a3d42), 0 20px 50px rgba(0, 0, 0, .22); }
+.dframe--phone .dframe__body { inline-size: var(--part-dframe-w, 390px); block-size: var(--part-dframe-h, min(844px, calc(100vh - 48px))); border-radius: var(--part-dframe-radius, 52px); max-inline-size: 100%; }
+.dframe--tablet .dframe__body { inline-size: var(--part-dframe-w, 820px); block-size: var(--part-dframe-h, min(1100px, calc(100vh - 48px))); border-radius: var(--part-dframe-radius, 34px); max-inline-size: 100%; }
+.dframe__bar { flex: none; position: relative; display: flex; align-items: center; justify-content: space-between; block-size: 44px; padding-inline: 26px; font-size: 14px; font-weight: 600; color: var(--part-dframe-bar-ink, #111); background: var(--part-dframe-bar, transparent); direction: ltr; }
+.dframe__notch { position: absolute; left: 50%; /* centring is direction-free */ inset-block-start: 8px; translate: -50% 0; inline-size: 110px; block-size: 28px; border-radius: 20px; background: var(--part-dframe-color, #16181b); }
+.dframe__icons { display: inline-flex; gap: 4px; align-items: flex-end; }
+.dframe__icons i { display: block; inline-size: 4px; background: currentColor; border-radius: 1px; }
+.dframe__icons i:nth-child(1) { block-size: 6px; } .dframe__icons i:nth-child(2) { block-size: 9px; } .dframe__icons i:nth-child(3) { block-size: 12px; }
+.dframe__screen { flex: 1; overflow-y: auto; overflow-x: hidden; overscroll-behavior: contain; -webkit-overflow-scrolling: touch; position: relative; }
+.dframe__frame { border: 0; inline-size: 100%; block-size: 100%; display: block; }
+.dframe__home { position: absolute; inset-block-end: 7px; left: 50%; /* centring is direction-free */ translate: -50% 0; inline-size: 120px; block-size: 5px; border-radius: 3px; background: var(--part-dframe-home, rgba(0, 0, 0, .35)); pointer-events: none; }
+.dframe__cap { font-size: 13px; color: var(--part-muted, #666); }
+/* on a real phone: no bezel, the content is the screen */
+.dframe.is-dissolved { display: block; }
+.dframe.is-dissolved .dframe__body { inline-size: 100%; block-size: auto; border: 0; border-radius: 0; box-shadow: none; overflow: visible; }
+.dframe.is-dissolved .dframe__bar, .dframe.is-dissolved .dframe__home, .dframe.is-dissolved .dframe__cap { display: none; }
+.dframe.is-dissolved .dframe__screen { overflow: visible; }

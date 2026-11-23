@@ -1,0 +1,37 @@
+<!doctype html>
+<html lang="he" dir="rtl">
+<head>
+<meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
+<title>signature-pad · דוגמה</title>
+<link rel="stylesheet" href="./signature-pad.css">
+<style>
+  body { font-family: system-ui, "Segoe UI", Arial, sans-serif; margin: 0; padding: 16px; background: #f4f4f2; color: #1d1d1d; }
+  main { max-inline-size: 560px; margin-inline: auto; display: grid; gap: 14px; }
+  h1 { font-size: 20px; margin: 0; } p { margin: 0; color: #555; }
+  .card { background: #fff; border-radius: 10px; padding: 16px; border: 1px solid #e2e2e2; }
+  .done { min-block-size: 44px; font: inherit; border: 0; border-radius: 8px; background: #2d4a3e; color: #fff; padding-inline: 18px; cursor: pointer; }
+  .done:disabled { opacity: .45; cursor: default; }
+  #receipt img { max-inline-size: 220px; display: block; border-block-end: 1px solid #ccc; }
+</style>
+</head>
+<body>
+<main>
+  <h1>אישור מסירה — הובלות «ענן קל» (עסק בדוי)</h1>
+  <p>הלקוח חותם באצבע על המסך, והחתימה נכנסת לאישור המסירה.</p>
+  <div class="card" id="pad"></div>
+  <button class="done" id="done" type="button" disabled>אישור מסירה</button>
+  <div class="card" id="receipt">עדיין לא נחתם.</div>
+</main>
+<script type="module">
+  import { createSignaturePad } from "./signature-pad.js";
+  const done = document.getElementById("done"), receipt = document.getElementById("receipt");
+  const sig = createSignaturePad(document.getElementById("pad"), { label: "חתימת המקבל" });
+  sig.on("change", ({ empty }) => (done.disabled = empty));
+  done.addEventListener("click", () => {
+    const v = sig.value();
+    receipt.innerHTML = `<b>נמסר ונחתם</b><img alt="חתימה" src="${v.image}"><span>${v.name || "ללא שם"}</span>`;
+  });
+</script>
+<script type="application/json" id="verify">[{"draw": ".sigp__canvas"}, {"ink": ".sigp__canvas"}, {"fill": [".sigp__input", "ישראלה ישראלי"]}, {"click": "#done"}, {"text": ["#receipt", "נמסר ונחתם"]}, {"countMin": ["#receipt img", 1]}]</script>
+</body>
+</html>

@@ -1,0 +1,14 @@
+/* guided-tour — spotlight + card. Positions are computed in physical px by the script (it reads the direction);
+   everything you would restyle is a custom property. */
+.gtour__ring { position: fixed; z-index: var(--part-gtour-z, 60); border-radius: var(--part-radius, 10px); box-shadow: 0 0 0 9999px var(--part-gtour-dim, rgba(10, 12, 16, .55)), 0 0 0 2px var(--part-gtour-edge, #fff); pointer-events: none; transition: all .25s ease; }
+.gtour__ring.is-free { box-shadow: 0 0 0 9999px var(--part-gtour-dim, rgba(10, 12, 16, .55)); }
+.gtour__card { position: fixed; z-index: calc(var(--part-gtour-z, 60) + 1); inline-size: min(340px, calc(100vw - 16px)); padding: 14px 16px 12px; border-radius: var(--part-radius, 12px); background: var(--part-surface, #fff); color: var(--part-ink, #1a1a1a); box-shadow: 0 12px 32px rgba(0, 0, 0, .25); font-family: var(--part-font, inherit); transition: top .25s ease, left .25s ease; }
+.gtour__count { margin: 0; font-size: 12px; color: var(--part-muted, #777); font-variant-numeric: tabular-nums; }
+.gtour__title { margin: 2px 0 6px; font-size: 17px; }
+.gtour__body { margin: 0 0 10px; font-size: 14.5px; line-height: 1.55; color: var(--part-ink-2, #333); }
+.gtour__bar { display: flex; gap: 8px; align-items: center; justify-content: flex-end; }
+.gtour__btn, .gtour__x { min-block-size: 44px; min-inline-size: 44px; padding-inline: 14px; border-radius: var(--part-radius, 8px); border: 1px solid var(--part-line, #ccc); background: var(--part-surface, #fff); color: inherit; font: inherit; cursor: pointer; }
+.gtour__btn--primary { background: var(--part-accent, #1f1f1f); color: var(--part-on-accent, #fff); border-color: transparent; }
+.gtour__x { margin-inline-end: auto; font-size: 20px; padding: 0; border-color: transparent; }
+.gtour__card button:focus-visible { outline: 2px solid var(--part-focus, #1a73e8); outline-offset: 2px; }
+@media (prefers-reduced-motion: reduce) { .gtour__ring, .gtour__card { transition: none; } }

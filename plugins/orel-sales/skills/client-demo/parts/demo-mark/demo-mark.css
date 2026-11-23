@@ -1,0 +1,15 @@
+/* demo-mark — small and quiet on purpose. Colours are custom properties; the corner is logical (RTL-correct). */
+.dmark { position: fixed; z-index: var(--part-dmark-z, 40); font-family: var(--part-font, inherit); max-inline-size: min(320px, calc(100vw - 24px)); display: grid; gap: 6px; }
+.dmark--in { position: absolute; }
+.dmark--bottom-start { inset-block-end: 12px; inset-inline-start: 12px; justify-items: start; }
+.dmark--bottom-end { inset-block-end: 12px; inset-inline-end: 12px; justify-items: end; }
+.dmark--top-start { inset-block-start: 12px; inset-inline-start: 12px; justify-items: start; }
+.dmark--top-end { inset-block-start: 12px; inset-inline-end: 12px; justify-items: end; }
+.dmark--bottom-start, .dmark--bottom-end { grid-auto-flow: row; }
+.dmark--bottom-start .dmark__detail, .dmark--bottom-end .dmark__detail { order: -1; }
+.dmark__btn { min-block-size: 44px; padding-inline: 12px; display: inline-flex; align-items: center; gap: 6px; border-radius: 99px; border: 1px solid var(--part-dmark-line, rgba(0, 0, 0, .14)); background: var(--part-dmark-bg, rgba(255, 255, 255, .86)); color: var(--part-dmark-ink, #555); font: inherit; font-size: 12.5px; letter-spacing: .02em; cursor: pointer; backdrop-filter: blur(4px); }
+.dmark__btn::before { content: ""; inline-size: 6px; block-size: 6px; border-radius: 50%; background: var(--part-dmark-dot, #b0b0b0); }
+.dmark__btn:focus-visible { outline: 2px solid var(--part-focus, #1a73e8); outline-offset: 2px; }
+.dmark__detail { margin: 0; padding: 10px 12px; border-radius: var(--part-radius, 10px); background: var(--part-surface, #fff); color: var(--part-ink, #1a1a1a); border: 1px solid var(--part-line, #ddd); box-shadow: 0 6px 20px rgba(0, 0, 0, .12); font-size: 13.5px; line-height: 1.5; }
+.dmark__detail[hidden] { display: none; }
+@media print { .dmark { display: none; } }

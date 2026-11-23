@@ -1,0 +1,50 @@
+<!doctype html>
+<html lang="he" dir="rtl">
+<head>
+<meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
+<title>live-run · דוגמה</title>
+<link rel="stylesheet" href="./live-run.css">
+<style>
+  body { font-family: system-ui, "Segoe UI", Arial, sans-serif; margin: 0; padding: 16px; background: #f2f4f3; color: #1d1d1d; }
+  main { max-inline-size: 1100px; margin-inline: auto; display: grid; gap: 14px; }
+  h1 { font-size: 20px; margin: 0; } p { margin: 0; color: #555; }
+  .board { display: grid; grid-template-columns: repeat(5, minmax(0, 1fr)); gap: 8px; }
+  @media (max-width: 700px) { .board { grid-template-columns: repeat(2, minmax(0, 1fr)); } }
+  .col { background: #fff; border: 1px solid #d9dedc; border-radius: 10px; padding: 8px; min-block-size: 120px; }
+  .col h2 { font-size: 14px; margin: 0 0 6px; display: flex; justify-content: space-between; }
+  .job { font-size: 12.5px; background: #eef3f1; border-radius: 6px; padding: 4px 6px; margin-block-end: 4px; }
+  .job.is-rush { background: #fde7e4; }
+  #moments { font-size: 13.5px; color: #333; padding-inline-start: 18px; margin: 0; }
+</style>
+</head>
+<body>
+<main>
+  <h1>«כביסה בענן» — מכבסה בדויה: הרצת יום עבודה</h1>
+  <p>לחצו הרצה: השעון זז, הזמנות נכנסות ועוברות בין התחנות מול העיניים.</p>
+  <div id="controls"></div>
+  <div class="board" id="board"></div>
+  <ol id="moments"></ol>
+</main>
+<script type="module">
+  import { createLiveRun, mountRunControls } from "./live-run.js";
+  const STATIONS = [["in", "נקלט"], ["wash", "כביסה"], ["dry", "ייבוש"], ["fold", "קיפול"], ["ready", "מוכן לאיסוף"]];
+  const MINS = { in: 15, wash: 45, dry: 40, fold: 20 };
+  let n = 300; const jobs = [];
+  const add = (now, rush) => jobs.push({ id: `L-${n++}`, st: "in", since: now.getTime(), rush });
+  for (let i = 0; i < 4; i++) add(new Date("2026-03-04T07:30:00"), false);
+  const moments = document.getElementById("moments");
+  const run = createLiveRun({
+    start: "2026-03-04T07:30:00", shift: { days: [0, 1, 2, 3, 4], start: "07:30", end: "19:00" },
+    speeds: [{ id: "x10", label: "×10", minsPerSec: 10 }, { id: "x60", label: "×60", minsPerSec: 60 }, { id: "x240", label: "×240", minsPerSec: 240 }],
+    every: [{ mins: 25, label: "הזמנה חדשה נקלטה", do: ({ now, rng }) => add(now, rng() < 0.15) }],
+    script: [{ at: "09:00", label: "שליח אסף 6 שקיות ממלון בשכונה", do: ({ now }) => { for (let i = 0; i < 6; i++) add(now, true); } }],
+    onTick: ({ now }) => jobs.forEach((j) => { const i = STATIONS.findIndex(([id]) => id === j.st); const need = (MINS[j.st] || Infinity) * (j.rush ? 0.6 : 1); if ((now - j.since) / 6e4 >= need && i < STATIONS.length - 1) { j.st = STATIONS[i + 1][0]; j.since = now.getTime(); } }),
+  });
+  const paint = () => { document.getElementById("board").innerHTML = STATIONS.map(([id, name]) => { const here = jobs.filter((j) => j.st === id); return `<section class="col" data-st="${id}"><h2>${name}<b>${here.length}</b></h2>${here.slice(-6).map((j) => `<div class="job${j.rush ? " is-rush" : ""}">${j.id}${j.rush ? " · דחוף" : ""}</div>`).join("")}</section>`; }).join(""); };
+  run.on("tick", paint).on("moment", (m) => { const li = document.createElement("li"); li.textContent = `${String(m.now.getHours()).padStart(2, "0")}:${String(m.now.getMinutes()).padStart(2, "0")} — ${m.label}`; moments.prepend(li); });
+  mountRunControls(document.getElementById("controls"), run, { ffMins: 120, ffText: "דילוג שעתיים" });
+  paint();
+</script>
+<script type="application/json" id="verify">[{"click": ".lrun__ff"}, {"changed": ".lrun__clock"}, {"text": [".lrun__clock", "09:30"]}, {"countMin": ["[data-st=wash] .job, [data-st=dry] .job, [data-st=fold] .job, [data-st=ready] .job", 2]}, {"text": ["#moments", "שליח אסף"]}, {"click": ".lrun__play"}, {"countMin": [".lrun.is-running", 1]}, {"click": ".lrun__play"}]</script>
+</body>
+</html>

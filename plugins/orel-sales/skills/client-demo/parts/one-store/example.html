@@ -1,0 +1,60 @@
+<!doctype html>
+<html lang="he" dir="rtl">
+<head>
+<meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
+<title>one-store · דוגמה</title>
+<style>
+  body { font-family: system-ui, "Segoe UI", Arial, sans-serif; margin: 0; padding: 16px; background: #f6f5f2; color: #1d1d1d; }
+  main { max-inline-size: 900px; margin-inline: auto; display: grid; gap: 14px; }
+  h1 { font-size: 20px; margin: 0; } p { margin: 0; color: #555; }
+  .kpis { display: grid; grid-template-columns: repeat(auto-fit, minmax(150px, 1fr)); gap: 10px; }
+  .kpi { background: #fff; border: 1px solid #e0ddd6; border-radius: 10px; padding: 12px; }
+  .kpi b { display: block; font-size: 30px; font-variant-numeric: tabular-nums; }
+  .cols { display: grid; gap: 12px; grid-template-columns: repeat(auto-fit, minmax(260px, 1fr)); }
+  ul { list-style: none; margin: 0; padding: 0; display: grid; gap: 6px; }
+  li { background: #fff; border: 1px solid #e0ddd6; border-radius: 8px; padding: 8px 10px; display: flex; gap: 8px; align-items: center; justify-content: space-between; }
+  button { min-block-size: 44px; padding-inline: 12px; font: inherit; border: 1px solid #555; border-radius: 8px; background: #fff; cursor: pointer; }
+</style>
+</head>
+<body>
+<main>
+  <h1>«צבע טרי» — קבלן צבע בדוי: עבודות השבוע</h1>
+  <p>המספר בכרטיס והשורות ברשימה קוראים אותו בורר. סגרו עבודה — שניהם זזים יחד.</p>
+  <div class="kpis">
+    <div class="kpi">פתוחות<b id="k-open"></b></div>
+    <div class="kpi">באיחור<b id="k-late"></b></div>
+    <div class="kpi">יתרה לגבייה<b id="k-due"></b></div>
+  </div>
+  <div class="cols">
+    <section><h2>פתוחות (<span id="n-open"></span>)</h2><ul id="open"></ul></section>
+    <section><h2>באיחור (<span id="n-late"></span>)</h2><ul id="late"></ul></section>
+  </div>
+  <button id="reset" type="button">חזרה לנתוני הפתיחה</button>
+</main>
+<script type="module">
+  import { createStore } from "./one-store.js";
+  const store = createStore({ today: 10, jobs: [
+    { id: 1, what: "דירת 4 חדרים, קומה 2", due: 8, done: false, sum: 6400 },
+    { id: 2, what: "חדר מדרגות, 6 קומות", due: 12, done: false, sum: 11800 },
+    { id: 3, what: "משרד קטן, קיר אחד", due: 9, done: false, sum: 1900 },
+    { id: 4, what: "גדר חיצונית 30 מ׳", due: 15, done: false, sum: 4200 },
+    { id: 5, what: "חדר ילדים", due: 7, done: true, sum: 2300 },
+  ] }, { persist: "session", key: "example-paint" });
+  store.define("open", (s) => s.jobs.filter((j) => !j.done))
+       .define("late", (s) => s.jobs.filter((j) => !j.done && j.due < s.today));
+  const money = (n) => "₪" + n.toLocaleString("he-IL");
+  store.bind(document.getElementById("k-open"), "open");
+  store.bind(document.getElementById("k-late"), "late");
+  store.bind(document.getElementById("k-due"), () => store.sum("open", (j) => j.sum), money);
+  store.bind(document.getElementById("n-open"), "open");
+  store.bind(document.getElementById("n-late"), "late");
+  const list = (id, name) => { document.getElementById(id).innerHTML = store.rows(name).map((j) =>
+    `<li><span>${j.what} · ${money(j.sum)}</span><button type="button" data-close="${j.id}">סגירה</button></li>`).join(""); };
+  const paint = () => { list("open", "open"); list("late", "late"); };
+  store.subscribe(paint); paint();
+  document.addEventListener("click", (e) => { const b = e.target.closest("[data-close]"); if (b) store.set((s) => { s.jobs.find((j) => j.id === +b.dataset.close).done = true; }); });
+  document.getElementById("reset").addEventListener("click", () => store.reset());
+</script>
+<script type="application/json" id="verify">[{"click": "#reset"}, {"text": ["#k-late", "2"]}, {"click": "#late [data-close]"}, {"text": ["#k-late", "1"]}, {"text": ["#n-late", "1"]}, {"count": ["#late li", 1]}, {"text": ["#k-open", "3"]}]</script>
+</body>
+</html>

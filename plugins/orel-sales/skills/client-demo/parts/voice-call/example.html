@@ -1,0 +1,43 @@
+<!doctype html>
+<html lang="he" dir="rtl">
+<head>
+<meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
+<title>voice-call · דוגמה</title>
+<link rel="stylesheet" href="./voice-call.css">
+<style>
+  body { font-family: system-ui, "Segoe UI", Arial, sans-serif; margin: 0; padding: 16px; background: #eef0ee; color: #1d1d1d; }
+  main { max-inline-size: 900px; margin-inline: auto; display: grid; gap: 16px; grid-template-columns: minmax(0, 380px) minmax(0, 1fr); align-items: start; }
+  @media (max-width: 760px) { main { grid-template-columns: 1fr; } }
+  h1 { font-size: 20px; margin: 0; grid-column: 1 / -1; }
+  aside.side { display: grid; gap: 12px; }
+  aside.side > button { min-block-size: 44px; font: inherit; border-radius: 8px; border: 1px solid #444; background: #fff; cursor: pointer; }
+</style>
+</head>
+<body>
+<main>
+  <h1>«גינת השכונה» — משתלה בדויה: הסוכנת הקולית עונה בערב</h1>
+  <div id="call"></div>
+  <aside class="side">
+    <button type="button" id="ring">צלצול: לקוח מתקשר</button>
+    <div id="real"></div>
+  </aside>
+</main>
+<script type="module">
+  import { createVoiceCall, realNumberCard } from "./voice-call.js";
+  const call = createVoiceCall(document.getElementById("call"), {
+    caller: { name: "עומר שושן", number: "052-014-2290" }, agentName: "נגה", speed: 4,
+    lines: [
+      { who: "agent", at: 0.5, text: "ערב טוב, הגעת לגינת השכונה, מדברת נגה. איך אפשר לעזור?" },
+      { who: "caller", at: 4, text: "היי, יש לכם עציצי זית גדולים? אני צריך שניים למרפסת." },
+      { who: "agent", at: 8, text: "יש לנו זית בעציץ 40 ליטר ב־340 ₪. אפשר לשמור לך שניים עד מחר בצהריים." },
+      { who: "caller", at: 13, text: "מעולה, תשמרי. אגיע מחר בעשר." },
+      { who: "event", at: 15, text: "נרשמה שמירה: 2 × זית 40 ל׳ · איסוף מחר 10:00" },
+      { who: "agent", at: 16, text: "שמרתי. שלחתי לך הודעה עם הכתובת. להתראות!" },
+    ],
+  });
+  realNumberCard(document.getElementById("real"), { number: "03-555-0142", note: "מספר הדגמה בדוי — במקומו שמים את הקו האמיתי של הסוכן." });
+  document.getElementById("ring").addEventListener("click", () => call.ring());
+</script>
+<script type="application/json" id="verify">[{"click": "#ring"}, {"text": [".vcall__status", "שיחה נכנסת"]}, {"click": "[data-vcall=answer]"}, {"countMin": [".vcall__line", 2]}, {"text": [".vcall__lines", "עציצי זית"]}, {"text": [".vcall__status", "הסתיימה"]}, {"count": [".vcall__line", 6]}]</script>
+</body>
+</html>

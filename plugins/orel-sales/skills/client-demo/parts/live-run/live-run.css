@@ -1,0 +1,11 @@
+/* live-run controls — structure only; restyle through the custom properties or replace the strip entirely. */
+.lrun { display: inline-flex; flex-wrap: wrap; align-items: center; gap: 8px; font-family: var(--part-font, inherit); color: var(--part-ink, #1a1a1a); }
+.lrun__clock { font-variant-numeric: tabular-nums; font-size: var(--part-lrun-clock-size, 22px); font-weight: 600; min-inline-size: 7.5em; direction: ltr; unicode-bidi: isolate; }
+.lrun button { min-block-size: 44px; min-inline-size: 44px; padding-inline: 12px; font: inherit; border: 1px solid var(--part-line, #bdbdbd); border-radius: var(--part-radius, 8px); background: var(--part-surface, #fff); color: inherit; cursor: pointer; }
+.lrun__play { background: var(--part-accent, #1f1f1f) !important; color: var(--part-on-accent, #fff) !important; border-color: transparent !important; }
+.lrun__speeds { display: inline-flex; gap: 4px; }
+.lrun__speed[aria-pressed="true"] { border-color: var(--part-accent, #1f1f1f); box-shadow: inset 0 0 0 1px var(--part-accent, #1f1f1f); }
+.lrun.is-running .lrun__clock::after { content: ""; display: inline-block; inline-size: 8px; block-size: 8px; border-radius: 50%; margin-inline-start: 8px; background: var(--part-live, #d93025); animation: lrun-pulse 1s infinite; vertical-align: middle; }
+@keyframes lrun-pulse { 50% { opacity: .25; } }
+@media (prefers-reduced-motion: reduce) { .lrun.is-running .lrun__clock::after { animation: none; } }
+.lrun button:focus-visible { outline: 2px solid var(--part-focus, #1a73e8); outline-offset: 2px; }

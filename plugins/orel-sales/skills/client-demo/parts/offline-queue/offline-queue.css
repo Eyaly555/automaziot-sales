@@ -1,0 +1,21 @@
+/* offline-queue status — structure only. */
+.oq { display: grid; gap: 10px; font-family: var(--part-font, inherit); color: var(--part-ink, #1a1a1a); }
+.oq__switch { display: inline-flex; align-items: center; gap: 10px; justify-self: start; min-block-size: 44px; padding-inline: 6px 14px; border-radius: 99px; border: 1px solid var(--part-line, #ccc); background: var(--part-surface, #fff); color: inherit; font: inherit; cursor: pointer; }
+.oq__knob { inline-size: 40px; block-size: 24px; border-radius: 99px; background: var(--part-oq-off, #c9c9c9); position: relative; transition: background .2s; }
+.oq__knob::after { content: ""; position: absolute; inset-block-start: 3px; inset-inline-start: 3px; inline-size: 18px; block-size: 18px; border-radius: 50%; background: #fff; transition: inset-inline-start .2s; }
+[data-oq-online="true"] .oq__knob { background: var(--part-ok, #1e8e3e); }
+[data-oq-online="true"] .oq__knob::after { inset-inline-start: 19px; }
+.oq__sum { margin: 0; font-size: 14px; color: var(--part-muted, #555); }
+.oq__items { list-style: none; margin: 0; padding: 0; display: grid; gap: 6px; counter-reset: oq; }
+.oq__item { counter-increment: oq; display: grid; grid-template-columns: auto 1fr auto auto; gap: 10px; align-items: center; padding: 8px 10px; border-radius: var(--part-radius, 8px); border: 1px solid var(--part-line, #e0e0e0); background: var(--part-surface, #fff); font-size: 14px; }
+.oq__item::before { content: counter(oq); font-variant-numeric: tabular-nums; color: var(--part-muted, #888); font-size: 12px; }
+.oq__item small { color: var(--part-muted, #666); }
+.oq__item--local { border-inline-start: 3px solid var(--part-warn, #e8a400); }
+.oq__item--sending, .oq__item--retry { border-inline-start: 3px solid var(--part-info, #1a73e8); }
+.oq__item--sent { opacity: .65; border-inline-start: 3px solid var(--part-ok, #1e8e3e); }
+.oq__item--failed { border-inline-start: 3px solid var(--part-bad, #d93025); }
+.oq__empty { color: var(--part-muted, #777); font-size: 14px; }
+.oq__retry { min-block-size: 44px; min-inline-size: 44px; border-radius: var(--part-radius, 8px); border: 1px solid var(--part-line, #ccc); background: var(--part-surface, #fff); font: inherit; cursor: pointer; }
+.oq__log summary { cursor: pointer; min-block-size: 44px; display: flex; align-items: center; color: var(--part-muted, #555); }
+.oq__log ul { margin: 0; padding-inline-start: 18px; font-size: 13px; color: var(--part-ink-2, #333); }
+.oq button:focus-visible, .oq summary:focus-visible { outline: 2px solid var(--part-focus, #1a73e8); outline-offset: 2px; }

@@ -1,0 +1,39 @@
+<!doctype html>
+<html lang="he" dir="rtl">
+<head>
+<meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
+<title>csv-export · דוגמה</title>
+<style>
+  body { font-family: system-ui, "Segoe UI", Arial, sans-serif; margin: 0; padding: 16px; background: #f4f4f1; color: #1d1d1d; }
+  main { max-inline-size: 760px; margin-inline: auto; display: grid; gap: 12px; }
+  h1 { font-size: 20px; margin: 0; } table { border-collapse: collapse; background: #fff; inline-size: 100%; }
+  td, th { padding: 8px; border-block-end: 1px solid #e3e3e3; text-align: start; }
+  button { min-block-size: 44px; padding-inline: 16px; font: inherit; border: 1px solid #444; border-radius: 8px; background: #fff; cursor: pointer; justify-self: start; }
+  #done { color: #333; } pre { white-space: pre-wrap; overflow-wrap: anywhere; font-size: 12px; background: #fff; padding: 8px; }
+</style>
+</head>
+<body>
+<main>
+  <h1>«ספרים בכריכה» — הוצאה לאור בדויה: הזמנות מחנויות</h1>
+  <table><thead><tr><th>חנות</th><th>כותר</th><th>עותקים</th><th>תאריך</th></tr></thead><tbody id="rows"></tbody></table>
+  <button type="button" id="export">ייצוא לאקסל</button>
+  <p id="done"></p><pre id="peek"></pre>
+</main>
+<script type="module">
+  import { toCsv, downloadCsv } from "./csv-export.js";
+  const rows = [
+    { shop: "חנות הספרים של הנחל", title: "ים של \"מילים\"", qty: 40, at: new Date(2026, 2, 2) },
+    { shop: "קפה ספר, הגליל", title: "=הסוד של הדבורה", qty: 12, at: new Date(2026, 2, 3) },
+    { shop: "ספרי התבור", title: "מפה, מצפן ושני חברים", qty: 25, at: new Date(2026, 2, 4) },
+  ];
+  const cols = [["חנות", "shop"], ["כותר", "title"], ["עותקים", "qty"], ["תאריך", "at"]];
+  document.getElementById("rows").innerHTML = rows.map((r) => `<tr><td>${r.shop}</td><td>${r.title}</td><td>${r.qty}</td><td>${r.at.toLocaleDateString("he-IL")}</td></tr>`).join("");
+  document.getElementById("export").onclick = () => {
+    const r = downloadCsv(rows, cols, "הזמנות-מרץ");
+    document.getElementById("done").textContent = `נשמר ${r.filename} · ${r.rows} שורות`;
+    document.getElementById("peek").textContent = toCsv(rows, cols).slice(1);
+  };
+</script>
+<script type="application/json" id="verify">[{"click": "#export"}, {"text": ["#done", "הזמנות-מרץ.csv"]}, {"text": ["#peek", "\"ים של \"\"מילים\"\"\""]}, {"text": ["#peek", "'=הסוד"]}, {"text": ["#peek", "04/03/2026"]}]</script>
+</body>
+</html>

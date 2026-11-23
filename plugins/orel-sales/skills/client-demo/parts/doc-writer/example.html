@@ -1,0 +1,43 @@
+<!doctype html>
+<html lang="he" dir="rtl">
+<head>
+<meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
+<title>doc-writer · דוגמה</title>
+<link rel="stylesheet" href="./doc-writer.css">
+<style>
+  body { font-family: system-ui, "Segoe UI", Arial, sans-serif; margin: 0; padding: 16px; background: #e9e7e2; color: #1d1d1d; }
+  main { max-inline-size: 820px; margin-inline: auto; display: grid; gap: 12px; }
+  .bar { display: flex; gap: 8px; flex-wrap: wrap; }
+  .bar button { min-block-size: 44px; padding-inline: 14px; font: inherit; border: 1px solid #444; border-radius: 8px; background: #fff; cursor: pointer; }
+</style>
+</head>
+<body>
+<main>
+  <div class="bar"><button type="button" id="fail">סמנו את בדיקת הלחץ כלא תקינה</button><button type="button" id="replay">לכתוב מחדש</button><button type="button" id="print">הדפסה</button></div>
+  <div id="doc"></div>
+</main>
+<script type="module">
+  import { createDocument } from "./doc-writer.js";
+  const checks = [["לחץ מים בכניסה", true, "3.8 בר"], ["דליפה במחבר המונה", true], ["שסתום אל־חוזר", true], ["בדיקת לחץ 30 דקות", true, "ללא ירידה"]];
+  const spec = () => ({
+    title: "תעודת בדיקת מערכת מים", subtitle: "נכתבה מתוך נתוני הביקור, בלי הקלדה חוזרת",
+    number: "WT-2603-118", date: "04/03/2026",
+    from: { name: "«זרם» — שירותי אינסטלציה (עסק בדוי)", lines: ["רח׳ הנפח 9, אזור התעשייה", "03-555-0187"] },
+    to: { label: "עבור", name: "ועד הבית, רח׳ הכלנית 22", lines: ["בניין 4 קומות, 12 דירות"] },
+    blocks: [
+      { heading: "פרטי הביקור" }, { fields: [["טכנאי", "אביתר נגר"], ["שעת הגעה", "08:40"], ["שעת סיום", "10:15"], ["סוג ביקור", "בדיקה תקופתית"]] },
+      { heading: "בדיקות" }, { check: checks },
+      { heading: "חלקים שהוחלפו" }, { table: { columns: ["פריט", "כמות", "הערה"], rows: [["אטם גומי 3/4", "2", "במחבר המונה"], ["ברז כדורי 1/2", "1", "בחדר המדרגות"]], align: ["start", "end", "start"] } },
+      { text: checks.every((c) => c[1]) ? "המערכת נמצאה תקינה ומאושרת לשימוש." : "נמצא ליקוי. נקבע ביקור חוזר לתיקון בתוך 3 ימי עבודה." },
+      { signature: { name: "אביתר נגר", role: "טכנאי מוסמך", date: "04/03/2026" } },
+    ],
+    footer: "המסמך הופק אוטומטית מנתוני הביקור. כל הנתונים כאן בדויים.",
+  });
+  const doc = createDocument(document.getElementById("doc"), spec(), { stepMs: 120 });
+  document.getElementById("fail").onclick = () => { checks[3][1] = false; checks[3][2] = "ירידה של 0.6 בר"; doc.update(spec()); };
+  document.getElementById("replay").onclick = () => doc.write();
+  document.getElementById("print").onclick = () => doc.print();
+</script>
+<script type="application/json" id="verify">[{"countMin": [".docw.is-written", 1]}, {"text": [".docw__blocks", "המערכת נמצאה תקינה"]}, {"click": "#fail"}, {"text": [".docw__blocks", "נמצא ליקוי"]}, {"count": [".docw__ck--bad", 1]}]</script>
+</body>
+</html>

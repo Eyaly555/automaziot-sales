@@ -1,0 +1,18 @@
+/* persona-switch — tiles and a header chip. Neutral; restyle or replace. */
+.pers, .pers-chip { font-family: var(--part-font, inherit); color: var(--part-ink, #1a1a1a); }
+.pers__h { font-size: 18px; margin: 0 0 10px; }
+.pers__tiles { list-style: none; margin: 0; padding: 0; display: grid; gap: 10px; grid-template-columns: repeat(auto-fill, minmax(min(100%, 220px), 1fr)); }
+.pers__tile { inline-size: 100%; display: flex; gap: 12px; align-items: center; text-align: start; min-block-size: 72px; padding: 12px; border-radius: var(--part-radius, 12px); border: 1px solid var(--part-line, #ddd); background: var(--part-surface, #fff); color: inherit; font: inherit; cursor: pointer; }
+.pers__tile[aria-pressed="true"] { border-color: var(--part-accent, #1f1f1f); box-shadow: inset 0 0 0 1px var(--part-accent, #1f1f1f); }
+.pers__av { inline-size: 40px; block-size: 40px; flex: none; border-radius: 50%; display: grid; place-items: center; font-weight: 600; background: var(--part-pers-av, #e9ecef); }
+.pers__txt { display: grid; gap: 2px; min-inline-size: 0; }
+.pers__txt small, .pers-chip small { color: var(--part-muted, #666); }
+.pers__note { font-size: 13px; color: var(--part-ink-2, #444); }
+.pers-chip { position: relative; display: inline-block; }
+.pers-chip__btn { display: inline-flex; align-items: center; gap: 8px; min-block-size: 44px; padding-inline: 6px 12px; border-radius: 99px; border: 1px solid var(--part-line, #ddd); background: var(--part-surface, #fff); color: inherit; font: inherit; font-size: 14px; cursor: pointer; }
+.pers-chip__btn .pers__av { inline-size: 32px; block-size: 32px; font-size: 13px; }
+.pers-chip__menu { position: absolute; z-index: 20; inset-block-start: calc(100% + 6px); inset-inline-start: 0; min-inline-size: 240px; list-style: none; margin: 0; padding: 4px; border-radius: var(--part-radius, 10px); border: 1px solid var(--part-line, #ddd); background: var(--part-surface, #fff); box-shadow: 0 8px 24px rgba(0, 0, 0, .14); }
+.pers-chip__menu[hidden] { display: none; }
+.pers-chip__menu button { inline-size: 100%; min-block-size: 44px; text-align: start; padding-inline: 10px; border: 0; border-radius: 6px; background: none; color: inherit; font: inherit; cursor: pointer; display: flex; justify-content: space-between; gap: 8px; }
+.pers-chip__menu button[aria-pressed="true"] { background: var(--part-pers-on, #f0f2f4); }
+.pers button:focus-visible, .pers-chip button:focus-visible { outline: 2px solid var(--part-focus, #1a73e8); outline-offset: 2px; }

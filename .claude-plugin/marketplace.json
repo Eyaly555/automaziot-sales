@@ -1,0 +1,12 @@
+{
+  "name": "automaziot-sales",
+  "description": "כלי המכירות של אוטומציות AI",
+  "owner": {"name": "אוטומציות AI"},
+  "plugins": [
+    {
+      "name": "orel-sales",
+      "description": "הצעות מחיר, דמואים, הכנה לשיחות, תרגול והודעות המשך, מחוברים ללקוחות שלך במערכת.",
+      "source": "./plugins/orel-sales"
+    }
+  ]
+}

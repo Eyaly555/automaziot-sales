@@ -1,0 +1,17 @@
+/* view-controls bar — structure only; replace it freely, the logic layer does not need it. */
+.vbar { display: flex; flex-wrap: wrap; gap: 8px 14px; align-items: center; font-family: var(--part-font, inherit); color: var(--part-ink, #1a1a1a); }
+.vbar__time { display: inline-flex; border: 1px solid var(--part-line, #ccc); border-radius: var(--part-radius, 8px); overflow: hidden; }
+.vbar__seg { min-block-size: 44px; padding-inline: 12px; border: 0; background: var(--part-surface, #fff); color: inherit; font: inherit; cursor: pointer; }
+.vbar__seg + .vbar__seg { border-inline-start: 1px solid var(--part-line, #ccc); }
+.vbar__seg[aria-checked="true"] { background: var(--part-accent, #1f1f1f); color: var(--part-on-accent, #fff); }
+.vbar__facet { display: inline-flex; flex-wrap: wrap; gap: 6px; align-items: center; }
+.vbar__flabel { font-size: 13px; color: var(--part-muted, #666); }
+.vbar__chip { min-block-size: 44px; padding-inline: 12px; border-radius: 99px; border: 1px solid var(--part-line, #ccc); background: var(--part-surface, #fff); color: inherit; font: inherit; font-size: 14px; cursor: pointer; }
+.vbar__chip small { color: var(--part-muted, #777); font-variant-numeric: tabular-nums; }
+.vbar__chip[aria-pressed="true"] { border-color: var(--part-accent, #1f1f1f); box-shadow: inset 0 0 0 1px var(--part-accent, #1f1f1f); }
+.vbar__chip.is-zero { opacity: .5; }
+.vbar__sort { display: inline-flex; align-items: center; gap: 6px; font-size: 13px; color: var(--part-muted, #666); }
+.vbar__sort select { min-block-size: 44px; border-radius: var(--part-radius, 8px); border: 1px solid var(--part-line, #ccc); padding-inline: 8px; font: inherit; color: var(--part-ink, #1a1a1a); background: var(--part-surface, #fff); }
+.vbar__say { flex-basis: 100%; margin: 0; font-size: 14px; color: var(--part-ink-2, #333); }
+.vbar__reset { min-block-size: 44px; padding-inline: 12px; border: 0; background: none; color: inherit; font: inherit; text-decoration: underline; cursor: pointer; }
+.vbar button:focus-visible, .vbar select:focus-visible { outline: 2px solid var(--part-focus, #1a73e8); outline-offset: 2px; }

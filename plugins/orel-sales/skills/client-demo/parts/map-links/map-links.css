@@ -1,0 +1,8 @@
+/* map-links — big thumb-sized buttons; colours are custom properties. */
+.mlinks { display: grid; gap: 6px; font-family: var(--part-font, inherit); color: var(--part-ink, #1a1a1a); }
+.mlinks__addr { font-size: 14px; }
+.mlinks__note { font-size: 13.5px; color: var(--part-warn-ink, #8a5a00); }
+.mlinks__row { display: flex; flex-wrap: wrap; gap: 8px; }
+.mlinks__a { display: inline-flex; align-items: center; justify-content: center; min-block-size: 44px; min-inline-size: 88px; padding-inline: 14px; border-radius: var(--part-radius, 8px); border: 1px solid var(--part-line, #ccc); background: var(--part-surface, #fff); color: inherit; font: inherit; font-size: 15px; text-decoration: none; }
+.mlinks__a--call { background: var(--part-mlinks-call, #1e8e3e); color: #fff; border-color: transparent; }
+.mlinks__a:focus-visible { outline: 2px solid var(--part-focus, #1a73e8); outline-offset: 2px; }

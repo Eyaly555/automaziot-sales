@@ -1,0 +1,37 @@
+<!doctype html>
+<html lang="he" dir="rtl">
+<head>
+<meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
+<title>device-frame · דוגמה</title>
+<link rel="stylesheet" href="./device-frame.css">
+<style>
+  body { font-family: system-ui, "Segoe UI", Arial, sans-serif; margin: 0; padding: 16px; background: #e8eaec; color: #1d1d1d; }
+  main { max-inline-size: 1100px; margin-inline: auto; display: grid; gap: 24px; grid-template-columns: minmax(0, 1fr) auto; align-items: start; }
+  @media (max-width: 600px) { main { grid-template-columns: 1fr; } }
+  .desk h1 { font-size: 20px; margin: 0 0 8px; } .desk p { color: #555; }
+  .app { padding: 12px 14px 24px; display: grid; gap: 10px; }
+  .app h2 { font-size: 18px; margin: 4px 0; }
+  .stop { border: 1px solid #ddd; border-radius: 12px; padding: 10px 12px; display: grid; gap: 2px; }
+  .stop small { color: #666; }
+  .app button { min-block-size: 48px; font: inherit; border-radius: 12px; border: 0; background: #2e5e4e; color: #fff; cursor: pointer; }
+</style>
+</head>
+<body>
+<main>
+  <div class="desk"><h1>«ירוק בעיר» — גינון בדוי: האפליקציה של הגנן</h1><p>על מחשב רואים את האפליקציה בתוך מכשיר, עם גלילה משלה. בטלפון אמיתי המסגרת נעלמת והאפליקציה היא המסך.</p></div>
+  <div id="frame"></div>
+</main>
+<template id="app"><div class="app"><h2>הבוקר שלך · 6 גינות</h2>
+  <div class="stop"><b>1 · משפחת אלמוג</b><small>כיסוח + גיזום · 07:30</small></div><div class="stop"><b>2 · בית ספר הגפן</b><small>השקיה — בדיקת טפטפות · 09:00</small></div>
+  <div class="stop"><b>3 · משרדי סלע</b><small>עציצים בלובי · 10:30</small></div><div class="stop"><b>4 · משפחת קורן</b><small>שתילה עונתית · 12:00</small></div>
+  <div class="stop"><b>5 · גן ציבורי</b><small>ניקוי עלים · 14:00</small></div><div class="stop"><b>6 · משפחת רז</b><small>דישון · 15:30</small></div>
+  <button type="button" id="start">יצאתי לדרך</button><p id="state"></p></div></template>
+<script type="module">
+  import { createDeviceFrame } from "./device-frame.js";
+  const content = document.getElementById("app").content.cloneNode(true).firstElementChild;
+  createDeviceFrame(document.getElementById("frame"), { kind: "phone", content, time: "07:12", label: "אפליקציית הגנן" });
+  content.querySelector("#start").onclick = () => { content.querySelector("#state").textContent = "בדרך לגינה הראשונה — הלקוחה קיבלה הודעה."; };
+</script>
+<script type="application/json" id="verify">[{"countMin": [".dframe__screen .stop", 6]}, {"click": "#start"}, {"text": ["#state", "בדרך לגינה הראשונה"]}]</script>
+</body>
+</html>

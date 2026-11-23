@@ -1,0 +1,35 @@
+<!doctype html>
+<html lang="he" dir="rtl">
+<head>
+<meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
+<title>dynamic-form · דוגמה</title>
+<link rel="stylesheet" href="./dynamic-form.css">
+<style>
+  body { font-family: system-ui, "Segoe UI", Arial, sans-serif; margin: 0; padding: 16px; background: #f3f4f2; color: #1d1d1d; }
+  main { max-inline-size: 760px; margin-inline: auto; display: grid; gap: 12px; }
+  h1 { font-size: 20px; margin: 0; } .card { background: #fff; border: 1px solid #ddd; border-radius: 10px; padding: 16px; }
+  #saved { color: #333; white-space: pre-wrap; overflow-wrap: anywhere; }
+</style>
+</head>
+<body>
+<main>
+  <h1>«קר וטוב» — טכנאי מזגנים בדוי: טופס לפי סוג הקריאה</h1>
+  <div class="card" id="form"></div>
+  <p id="saved"></p>
+</main>
+<script type="module">
+  import { createDynamicForm } from "./dynamic-form.js";
+  const common = [{ id: "model", type: "text", label: "דגם היחידה", placeholder: "למשל: עילי 1.5 כ״ס", required: true }, { id: "room", type: "select", label: "חדר", options: ["סלון", "חדר שינה", "חדר ילדים", "משרד"] }];
+  createDynamicForm(document.getElementById("form"), {
+    types: [{ id: "service", label: "טיפול שנתי" }, { id: "install", label: "התקנה" }, { id: "repair", label: "תקלה" }],
+    templates: {
+      service: [...common, { id: "filters", type: "checkbox", label: "ניקוי מסננים", group: "בוצע" }, { id: "gas", type: "checkbox", label: "בדיקת גז", group: "בוצע" }, { id: "drain", type: "checkbox", label: "שטיפת ניקוז", group: "בוצע" }],
+      install: [...common, { id: "pipe", type: "number", label: "אורך צנרת", unit: "מ׳", required: true }, { id: "bracket", type: "select", label: "מתקן", options: ["על הקיר", "על הגג", "על המרפסת"] }, { id: "notes", type: "textarea", label: "הערות להתקנה" }],
+      repair: [...common, { id: "fault", type: "select", label: "התקלה", options: ["לא מקרר", "מטפטף", "רעש חריג", "קוד שגיאה"], required: true }, { id: "code", type: "text", label: "קוד שגיאה", hint: "כפי שמופיע בצג" }, { id: "fixed", type: "checkbox", label: "תוקן במקום", group: "סיום" }],
+    },
+    onSubmit: ({ type, values }) => { document.getElementById("saved").textContent = `נשמר (${type}): ` + JSON.stringify(values); },
+  });
+</script>
+<script type="application/json" id="verify">[{"fill": [".dform__input[data-dform=model]", "קיר 1.25"]}, {"click": "[data-dform-type=repair]"}, {"countMin": ["select[data-dform=fault]", 1]}, {"click": ".dform__submit"}, {"text": [".dform__msg", "התקלה"]}, {"countMin": ["[aria-invalid=true]", 1]}, {"click": "[data-dform-type=service]"}, {"click": ".dform__check"}, {"click": ".dform__submit"}, {"text": ["#saved", "קיר 1.25"]}]</script>
+</body>
+</html>

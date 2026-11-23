@@ -1,0 +1,24 @@
+/* dynamic-form — structure only. */
+.dform { display: grid; gap: 12px; font-family: var(--part-font, inherit); color: var(--part-ink, #1a1a1a); }
+.dform__types { display: flex; flex-wrap: wrap; gap: 6px; }
+.dform__type { min-block-size: 44px; padding-inline: 16px; border-radius: 99px; border: 1px solid var(--part-line, #ccc); background: var(--part-surface, #fff); color: inherit; font: inherit; cursor: pointer; }
+.dform__type[aria-checked="true"] { background: var(--part-accent, #1f1f1f); color: var(--part-on-accent, #fff); border-color: transparent; }
+.dform__fields { display: grid; gap: 12px; grid-template-columns: repeat(auto-fill, minmax(min(100%, 240px), 1fr)); }
+.dform__field { display: grid; gap: 4px; align-content: start; }
+.dform__field--wide, .dform__group { grid-column: 1 / -1; }
+.dform__label { font-size: 14px; font-weight: 600; }
+.dform__req { color: var(--part-bad, #b3261e); }
+.dform__wrap { display: flex; align-items: center; gap: 6px; }
+.dform__input { inline-size: 100%; box-sizing: border-box; min-block-size: 44px; padding: 8px 12px; border-radius: var(--part-radius, 8px); border: 1px solid var(--part-line, #bbb); background: var(--part-surface, #fff); color: inherit; font: inherit; }
+textarea.dform__input { resize: vertical; }
+.dform__input[aria-invalid="true"] { border-color: var(--part-bad, #b3261e); box-shadow: inset 0 0 0 1px var(--part-bad, #b3261e); }
+.dform__unit { color: var(--part-muted, #666); font-size: 14px; }
+.dform__hint { color: var(--part-muted, #666); font-size: 12.5px; }
+.dform__group { border: 1px solid var(--part-line, #ddd); border-radius: var(--part-radius, 8px); padding: 8px 12px; display: flex; flex-wrap: wrap; gap: 4px 16px; margin: 0; }
+.dform__group legend { font-size: 14px; font-weight: 600; padding-inline: 4px; }
+.dform__check { display: inline-flex; align-items: center; gap: 8px; min-block-size: 44px; cursor: pointer; }
+.dform__check input { inline-size: 20px; block-size: 20px; accent-color: var(--part-accent, #1f1f1f); }
+.dform__msg { margin: 0; color: var(--part-bad, #b3261e); font-size: 14px; }
+.dform__msg:empty { display: none; }
+.dform__submit { justify-self: start; min-block-size: 44px; padding-inline: 20px; border-radius: var(--part-radius, 8px); border: 0; background: var(--part-accent, #1f1f1f); color: var(--part-on-accent, #fff); font: inherit; cursor: pointer; }
+.dform button:focus-visible, .dform__input:focus-visible, .dform__check input:focus-visible { outline: 2px solid var(--part-focus, #1a73e8); outline-offset: 2px; }

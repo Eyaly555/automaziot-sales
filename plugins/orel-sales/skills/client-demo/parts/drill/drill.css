@@ -1,0 +1,23 @@
+/* drill — the figure looks pressable; the sheet comes from the end side on a desk and from the bottom on a phone. */
+.drill-fig { cursor: pointer; border-radius: 4px; text-decoration: underline dotted var(--part-muted, #888) 1px; text-underline-offset: 4px; }
+.drill-fig:hover { text-decoration-color: currentColor; }
+.drill-fig:focus-visible { outline: 2px solid var(--part-focus, #1a73e8); outline-offset: 3px; }
+.drill { position: fixed; inset: 0; z-index: var(--part-drill-z, 70); font-family: var(--part-font, inherit); }
+.drill__shade { position: absolute; inset: 0; background: var(--part-drill-shade, rgba(0, 0, 0, .35)); }
+.drill__sheet { position: absolute; inset-block: 0; inset-inline-end: 0; inline-size: min(560px, 100vw); display: flex; flex-direction: column; background: var(--part-surface, #fff); color: var(--part-ink, #1a1a1a); box-shadow: 0 0 40px rgba(0, 0, 0, .2); outline: none; }
+@media (max-width: 640px) { .drill__sheet { inset-block-start: auto; inset-inline: 0; inline-size: 100%; max-block-size: 80vh; border-radius: 16px 16px 0 0; } }
+.drill__head { display: flex; align-items: flex-start; gap: 10px; padding: 14px 16px; border-block-end: 1px solid var(--part-line, #e3e3e3); }
+.drill__head > div { flex: 1; min-inline-size: 0; }
+.drill__title { margin: 0; font-size: 18px; }
+.drill__note { margin: 4px 0 0; font-size: 13.5px; color: var(--part-muted, #666); }
+.drill__count { font-size: 22px; font-weight: 700; font-variant-numeric: tabular-nums; }
+.drill__x { inline-size: 44px; block-size: 44px; border: 0; border-radius: 8px; background: none; font-size: 22px; color: inherit; cursor: pointer; }
+.drill__x:focus-visible, .drill tr.is-door:focus-visible { outline: 2px solid var(--part-focus, #1a73e8); outline-offset: -2px; }
+.drill__scroll { overflow: auto; flex: 1; }
+.drill__table { inline-size: 100%; border-collapse: collapse; font-size: 14px; }
+.drill__table th { position: sticky; inset-block-start: 0; background: var(--part-surface, #fff); font-size: 12.5px; color: var(--part-muted, #555); font-weight: 600; }
+.drill__table th, .drill__table td { padding: 10px 16px; border-block-end: 1px solid var(--part-line, #eee); }
+.drill__table td { font-variant-numeric: tabular-nums; }
+.drill tr.is-door { cursor: pointer; } .drill tr.is-door:hover { background: var(--part-drill-hover, #f6f7f8); }
+.drill__table tfoot td { font-size: 14px; }
+.drill__empty { padding: 20px 16px; color: var(--part-muted, #666); }

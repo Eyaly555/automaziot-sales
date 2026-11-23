@@ -1,0 +1,38 @@
+<!doctype html>
+<html lang="he" dir="rtl">
+<head>
+<meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
+<title>offer-page · דוגמה</title>
+<link rel="stylesheet" href="./offer-page.css">
+<style>
+  body { font-family: system-ui, "Segoe UI", Arial, sans-serif; margin: 0; padding: 16px; background: #faf9f6; color: #1d1d1d; }
+  main { max-inline-size: 1040px; margin-inline: auto; display: grid; gap: 12px; }
+  h1 { font-size: 20px; margin: 0; } #screen { color: #333; }
+</style>
+</head>
+<body>
+<main>
+  <h1>ההצעה — מרפאת השיניים «חיוך רחב» (לקוח בדוי, מחירים בדויים)</h1>
+  <div id="offer"></div>
+  <p id="screen"></p>
+</main>
+<script type="module">
+  import { createOffer } from "./offer-page.js";
+  const go = (what) => ({ label: "לראות בהדגמה", open: () => { document.getElementById("screen").textContent = `נפתח בהדגמה: ${what}`; } });
+  createOffer(document.getElementById("offer"), {
+    vatRate: 0.18, discountPct: 0, contract: { label: "לחוזה ולחתימה", href: "#contract" },
+    tracks: [{ id: "a", name: "מסלול א׳ — תורים ותזכורות", note: "מה שביקשתם בשיחה", lines: ["l1", "l2"] }, { id: "b", name: "מסלול ב׳ — כולל תיק מטופל", note: "א׳ ועוד תיק דיגיטלי", lines: ["l1", "l2", "l3"] }],
+    lines: [
+      { id: "l1", kind: "base", name: "יומן תורים לכל הרופאים", price: 14000, desc: "יומן אחד לכל החדרים והרופאים.", includes: ["תורים חוזרים", "חסימות חופשה"], why: "כל בוקר אני מתחילה בטלפונים לסדר את היומן", who: "מנהלת המרפאה", door: go("היומן") },
+      { id: "l2", kind: "base", name: "תזכורות וואטסאפ ואישור הגעה", price: 6500, door: go("התזכורות") },
+      { id: "l3", kind: "base", name: "תיק מטופל דיגיטלי", price: 18500, door: go("תיק המטופל") },
+      { id: "o1", kind: "option", name: "סוכנת קולית למענה אחרי שעות", price: 9000, door: go("הסוכנת הקולית") },
+      { id: "o2", kind: "option", name: "חיבור למערכת הנהלת החשבונות", price: null, desc: "תלוי בגרסה שלכם — יתומחר אחרי בדיקה." },
+      { id: "h1", kind: "hourly", name: "הדרכה לצוות", price: 350 },
+      { id: "m1", kind: "monthly", name: "תחזוקה ואחסון", price: 690 },
+    ],
+  });
+</script>
+<script type="application/json" id="verify">[{"text": ["[data-offer-total]", "20,500"]}, {"text": [".offer__line--unpriced", "לא נכלל"]}, {"click": "[data-offer-track=b]"}, {"text": ["[data-offer-total]", "39,000"]}, {"click": "[data-offer-add=o1]"}, {"text": ["[data-offer-total]", "48,000"]}, {"click": "[data-offer-h='5']"}, {"text": ["[data-offer-total]", "49,750"]}, {"text": [".offer__sum", "58,705"]}, {"click": "[data-offer-open=l3]"}, {"click": ".offer__dlg [data-offer-door]"}, {"text": ["#screen", "תיק המטופל"]}]</script>
+</body>
+</html>

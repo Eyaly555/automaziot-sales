@@ -1,0 +1,50 @@
+/* offer-page — structure only. The shape of this client's offer (a road, a building, a calendar) is yours to draw
+   around it; this is the honest list underneath. */
+.offer { font-family: var(--part-font, inherit); color: var(--part-ink, #1a1a1a); display: grid; gap: 16px; }
+.offer .visually-hidden { position: absolute; inline-size: 1px; block-size: 1px; overflow: hidden; clip: rect(0 0 0 0); white-space: nowrap; }
+.offer__tracks { display: grid; gap: 10px; grid-template-columns: repeat(auto-fit, minmax(min(100%, 220px), 1fr)); }
+.offer__track { display: grid; gap: 4px; text-align: start; padding: 14px; min-block-size: 44px; border-radius: var(--part-radius, 12px); border: 1px solid var(--part-line, #d5d5d5); background: var(--part-surface, #fff); color: inherit; font: inherit; cursor: pointer; }
+.offer__track small { color: var(--part-muted, #666); }
+.offer__track[aria-checked="true"] { border-color: var(--part-accent, #1f1f1f); box-shadow: inset 0 0 0 2px var(--part-accent, #1f1f1f); }
+.offer__tname { font-weight: 700; font-size: 16px; }
+.offer__tprice { font-size: 20px; font-variant-numeric: tabular-nums; }
+.offer__cols { display: grid; gap: 16px; grid-template-columns: minmax(0, 1fr) minmax(240px, 320px); align-items: start; }
+@media (max-width: 760px) { .offer__cols { grid-template-columns: 1fr; } .offer__sum { position: sticky; inset-block-end: 0; } }
+.offer__h { margin: 6px 0; font-size: 15px; color: var(--part-muted, #555); }
+.offer__list, .offer__tiles { list-style: none; margin: 0; padding: 0; display: grid; gap: 6px; }
+.offer__tiles { grid-template-columns: repeat(auto-fill, minmax(min(100%, 260px), 1fr)); }
+.offer__tile { display: flex; gap: 6px; align-items: stretch; }
+.offer__tick { display: grid; place-items: center; min-inline-size: 44px; border-radius: var(--part-radius, 8px); border: 1px solid var(--part-line, #d5d5d5); background: var(--part-surface, #fff); cursor: pointer; }
+.offer__tick input { inline-size: 20px; block-size: 20px; accent-color: var(--part-accent, #1f1f1f); }
+.offer__line { flex: 1; inline-size: 100%; display: flex; gap: 10px; align-items: center; justify-content: space-between; min-block-size: 44px; padding: 8px 12px; text-align: start; border-radius: var(--part-radius, 8px); border: 1px solid var(--part-line, #e2e2e2); background: var(--part-surface, #fff); color: inherit; font: inherit; cursor: pointer; }
+.offer__lname { min-inline-size: 0; }
+.offer__price { font-variant-numeric: tabular-nums; white-space: nowrap; }
+.offer__line--unpriced { border-style: dashed; }
+.offer__noprice { font-size: 13px; color: var(--part-bad, #b3261e); white-space: nowrap; }
+.offer__hourly { display: grid; grid-template-columns: 1fr auto; gap: 6px; align-items: center; }
+.offer__hsay { grid-column: 1 / -1; color: var(--part-muted, #666); font-variant-numeric: tabular-nums; }
+.offer__stepper { display: inline-flex; align-items: center; border: 1px solid var(--part-line, #d5d5d5); border-radius: var(--part-radius, 8px); background: var(--part-surface, #fff); }
+.offer__stepper button { inline-size: 44px; block-size: 44px; border: 0; background: none; font: inherit; font-size: 20px; color: inherit; cursor: pointer; }
+.offer__stepper output { min-inline-size: 3ch; text-align: center; font-variant-numeric: tabular-nums; }
+.offer__sum { display: grid; gap: 8px; padding: 14px; border-radius: var(--part-radius, 12px); background: var(--part-offer-sum-bg, #f4f4f2); }
+.offer__total { display: grid; gap: 2px; text-align: start; border: 0; background: none; color: inherit; font: inherit; cursor: pointer; padding: 0; }
+.offer__total b { font-size: var(--part-offer-total, 34px); font-variant-numeric: tabular-nums; }
+.offer__total span, .offer__monthly { font-size: 13.5px; color: var(--part-muted, #555); margin: 0; }
+.offer__warn { margin: 0; font-size: 13.5px; color: var(--part-bad, #b3261e); }
+.offer__contract { display: inline-flex; align-items: center; justify-content: center; min-block-size: 44px; border-radius: var(--part-radius, 8px); background: var(--part-accent, #1f1f1f); color: var(--part-on-accent, #fff); text-decoration: none; }
+.offer__dlg { border: 0; border-radius: var(--part-radius, 14px); padding: 0; inline-size: min(520px, calc(100vw - 24px)); color: var(--part-ink, #1a1a1a); box-shadow: 0 20px 60px rgba(0, 0, 0, .3); }
+.offer__dlg::backdrop { background: rgba(0, 0, 0, .35); }
+.offer__dlgin { padding: 16px 18px; display: grid; gap: 8px; }
+.offer__dlgin header { display: flex; justify-content: space-between; align-items: center; gap: 8px; }
+.offer__dlgin h3 { margin: 0; font-size: 18px; }
+.offer__dlgin p { margin: 0; line-height: 1.55; }
+.offer__x { inline-size: 44px; block-size: 44px; border: 0; background: none; font-size: 22px; cursor: pointer; color: inherit; }
+.offer__inc { margin: 0; padding-inline-start: 18px; }
+.offer__why { margin: 0; padding-inline-start: 10px; border-inline-start: 3px solid var(--part-line, #ccc); }
+.offer__why footer { font-size: 13px; color: var(--part-muted, #666); }
+.offer__door { justify-self: start; display: inline-flex; align-items: center; min-block-size: 44px; padding-inline: 14px; border-radius: var(--part-radius, 8px); border: 1px solid var(--part-accent, #1f1f1f); background: transparent; color: inherit; font: inherit; text-decoration: none; cursor: pointer; }
+.offer__break { inline-size: 100%; border-collapse: collapse; font-variant-numeric: tabular-nums; }
+.offer__break td { padding: 6px 4px; border-block-end: 1px solid var(--part-line, #eee); }
+.offer__break td:last-child { text-align: end; white-space: nowrap; }
+.offer__break tfoot td { font-weight: 600; }
+.offer button:focus-visible, .offer a:focus-visible, .offer input:focus-visible { outline: 2px solid var(--part-focus, #1a73e8); outline-offset: 2px; }

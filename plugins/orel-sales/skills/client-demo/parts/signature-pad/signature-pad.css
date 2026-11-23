@@ -1,0 +1,12 @@
+/* signature-pad — structure only. Every look is a custom property with a neutral fallback. */
+.sigp { display: grid; gap: 10px; font-family: var(--part-font, inherit); color: var(--part-ink, #1a1a1a); }
+.sigp__pad { position: relative; border: 1px dashed var(--part-line, #9a9a9a); border-radius: var(--part-radius, 8px); background: var(--part-surface, #fff); overflow: hidden; }
+.sigp__canvas { position: absolute; inset: 0; display: block; cursor: crosshair; }
+.sigp__line { position: absolute; inset-inline: 16px; inset-block-end: 34px; border-block-end: 1px solid var(--part-line, #c4c4c4); pointer-events: none; }
+.sigp__hint { position: absolute; inset-inline-start: 16px; inset-block-end: 10px; font-size: 12px; color: var(--part-muted, #777); pointer-events: none; }
+.sigp.is-signed .sigp__hint { opacity: 0; }
+.sigp__bar { display: flex; gap: 8px; justify-content: flex-end; }
+.sigp__btn { min-block-size: 44px; min-inline-size: 44px; padding-inline: 14px; font: inherit; border: 1px solid var(--part-line, #c4c4c4); border-radius: var(--part-radius, 8px); background: var(--part-surface, #fff); color: inherit; cursor: pointer; }
+.sigp__btn:focus-visible, .sigp__input:focus-visible { outline: 2px solid var(--part-focus, #1a73e8); outline-offset: 2px; }
+.sigp__name { display: grid; gap: 4px; font-size: 14px; }
+.sigp__input { min-block-size: 44px; padding-inline: 12px; font: inherit; border: 1px solid var(--part-line, #c4c4c4); border-radius: var(--part-radius, 8px); background: var(--part-surface, #fff); color: inherit; }

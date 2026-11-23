@@ -1,0 +1,27 @@
+<!doctype html>
+<html lang="he" dir="rtl">
+<head>
+<meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
+<title>demo-mark · דוגמה</title>
+<link rel="stylesheet" href="./demo-mark.css">
+<style>
+  body { font-family: system-ui, "Segoe UI", Arial, sans-serif; margin: 0; padding: 16px; background: #f7f7f5; color: #1d1d1d; min-block-size: 100vh; }
+  main { max-inline-size: 760px; margin-inline: auto; }
+  h1 { font-size: 20px; margin: 0 0 8px; } p { color: #555; }
+  .kpi { display: inline-grid; background: #fff; border: 1px solid #ddd; border-radius: 10px; padding: 12px 16px; margin-inline-end: 8px; margin-block-end: 8px; }
+  .kpi b { font-size: 28px; }
+</style>
+</head>
+<body>
+<main>
+  <h1>«דוושה» — סטודיו ספינינג בדוי</h1>
+  <p>סימן אחד שקט בפינה. לחיצה מסבירה מאיפה הנתונים, ושום דבר אחר בדמו לא צועק «לדוגמה».</p>
+  <div class="kpi">מנויים פעילים<b>412</b></div><div class="kpi">שיעורים השבוע<b>38</b></div><div class="kpi">תפוסה ממוצעת<b>86%</b></div>
+</main>
+<script type="module">
+  import { mountDemoMark } from "./demo-mark.js";
+  mountDemoMark({ detail: "נתוני הדגמה בדויים, נבנו מתוך מה שסיפרתם בשיחה. השיעורים, המנויים והתפוסה יגיעו מהמערכת שלכם." });
+</script>
+<script type="application/json" id="verify">[{"count": [".dmark", 1]}, {"click": ".dmark__btn"}, {"text": [".dmark__detail", "נתוני הדגמה בדויים"]}, {"press": [".dmark__btn", "Escape"]}, {"count": [".dmark__detail[hidden]", 1]}]</script>
+</body>
+</html>

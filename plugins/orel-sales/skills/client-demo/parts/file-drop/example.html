@@ -1,0 +1,36 @@
+<!doctype html>
+<html lang="he" dir="rtl">
+<head>
+<meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
+<title>file-drop · דוגמה</title>
+<link rel="stylesheet" href="./file-drop.css">
+<style>
+  body { font-family: system-ui, "Segoe UI", Arial, sans-serif; margin: 0; padding: 16px; background: #f4f4f1; color: #1d1d1d; }
+  main { max-inline-size: 700px; margin-inline: auto; display: grid; gap: 14px; }
+  h1 { font-size: 20px; margin: 0; } h2 { font-size: 16px; margin: 0 0 8px; }
+  .card { background: #fff; border: 1px solid #ddd; border-radius: 10px; padding: 14px; }
+  .line { display: flex; justify-content: space-between; align-items: center; gap: 8px; padding-block: 6px; border-block-end: 1px solid #eee; }
+  #total { color: #444; }
+</style>
+</head>
+<body>
+<main>
+  <h1>«בית נקי» — בדק בית בדוי: דירה ברחוב השקמה</h1>
+  <section class="card"><h2>מסמכים לתיק (עד 3 קבצים)</h2><div id="case"></div></section>
+  <section class="card"><h2>ממצאים — תמונה לכל סעיף</h2>
+    <div class="line"><span>רטיבות בתקרת האמבטיה</span><span id="d1"></span></div>
+    <div class="line"><span>סדק בריצוף המרפסת</span><span id="d2"></span></div>
+  </section>
+  <p id="total">0 קבצים בכל הבדיקה</p>
+</main>
+<script type="module">
+  import { createAttachments } from "./file-drop.js";
+  const files = createAttachments({ maxFiles: 3, maxBytes: 5 * 1048576 });
+  files.mount(document.getElementById("case"), "case");
+  files.mount(document.getElementById("d1"), "defect-1", { compact: true, label: "תמונה" });
+  files.mount(document.getElementById("d2"), "defect-2", { compact: true, label: "תמונה" });
+  files.on("change", () => { document.getElementById("total").textContent = `${files.all().length} קבצים בכל הבדיקה`; });
+</script>
+<script type="application/json" id="verify">[{"upload": ["#case .fdrop__zone", [{"name": "חוזה-שכירות.pdf", "type": "application/pdf", "size": 120000}, {"name": "תמונה-כניסה.jpg", "type": "image/jpeg", "size": 90000}]]}, {"count": ["#case .fdrop__file", 2]}, {"text": ["#case .fdrop__list", "חוזה-שכירות.pdf"]}, {"upload": ["#d1 .fdrop__zone", [{"name": "תקרה.jpg", "type": "image/jpeg", "size": 40000}]]}, {"text": ["#d1 .fdrop__badge", "1"]}, {"upload": ["#case .fdrop__zone", [{"name": "a.pdf", "type": "application/pdf", "size": 1000}, {"name": "b.pdf", "type": "application/pdf", "size": 1000}]]}, {"text": ["#case .fdrop__msg", "מגבלה"]}, {"text": ["#total", "4 קבצים"]}]</script>
+</body>
+</html>

@@ -1,0 +1,45 @@
+<!doctype html>
+<html lang="he" dir="rtl">
+<head>
+<meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
+<title>seed-world · דוגמה</title>
+<style>
+  body { font-family: system-ui, "Segoe UI", Arial, sans-serif; margin: 0; padding: 16px; color: #1b1b1b; background: #fafafa; }
+  h1 { font-size: 20px; margin: 0 0 4px; } p { margin: 0 0 12px; color: #555; }
+  .bar { display: flex; flex-wrap: wrap; gap: 8px; align-items: center; margin-block-end: 12px; }
+  .bar input { inline-size: 110px; min-block-size: 44px; font: inherit; padding-inline: 10px; border: 1px solid #bbb; border-radius: 8px; }
+  .bar button { min-block-size: 44px; padding-inline: 16px; font: inherit; border: 1px solid #333; background: #fff; border-radius: 8px; cursor: pointer; }
+  .list { display: grid; gap: 6px; grid-template-columns: repeat(auto-fill, minmax(280px, 1fr)); }
+  .row { background: #fff; border: 1px solid #e3e3e3; border-radius: 8px; padding: 10px 12px; }
+  .row b { display: block; } .row small { color: #666; } .row.is-trouble { border-color: #c0392b; }
+  .ltr { direction: ltr; unicode-bidi: isolate; }
+</style>
+</head>
+<body>
+<h1>לקוחות — חנות האופניים «גלגל חוזר» (עסק בדוי)</h1>
+<p>אותו מספר זרע מצייר תמיד אותו עולם. התאריכים נספרים מ־asOf, לא מהשעון.</p>
+<div class="bar">
+  <label for="seed">זרע</label><input id="seed" value="7" inputmode="numeric">
+  <button id="draw" type="button">צייר עולם</button>
+  <span id="sum"></span>
+</div>
+<div class="list" id="list"></div>
+<script type="module">
+  import { createWorld } from "./seed-world.js";
+  const list = document.getElementById("list"), sum = document.getElementById("sum");
+  function draw() {
+    const w = createWorld({ seed: +document.getElementById("seed").value || 1, asOf: "2026-03-04T08:30:00" });
+    const rows = w.people(12).map((p) => ({ ...p, addr: w.address({ city: p.city }), last: w.within(40), bike: w.pick(["עירוני", "הרים", "חשמלי", "ילדים"]), due: w.amount(120, 900) }));
+    const story = w.story(rows, [{ name: "late", count: 2, apply: (r) => { r.trouble = "תיקון באיחור של 3 ימים"; } }]);
+    list.innerHTML = rows.map((r) => `<div class="row${r.trouble ? " is-trouble" : ""}"><b>${r.name}</b>
+      <small>${r.addr.line} · <span class="ltr">${r.phone}</span></small><br>
+      <small>${r.bike} · ביקור אחרון ${w.fmtDate(r.last)} ${w.fmtTime(r.last)} · ₪${r.due.toLocaleString("he-IL")}</small>
+      ${r.trouble ? `<br><small>${r.trouble}</small>` : ""}</div>`).join("");
+    sum.textContent = `${rows.length} לקוחות · ${story.late.length} בבעיה`;
+  }
+  document.getElementById("draw").addEventListener("click", draw);
+  draw();
+</script>
+<script type="application/json" id="verify">[{"fill": ["#seed", "42"]}, {"click": "#draw"}, {"changed": "#list"}, {"countMin": [".row", 12]}, {"count": [".row.is-trouble", 2]}]</script>
+</body>
+</html>

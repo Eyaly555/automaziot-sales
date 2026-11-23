@@ -1,0 +1,39 @@
+<!doctype html>
+<html lang="he" dir="rtl">
+<head>
+<meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
+<title>incoming · דוגמה</title>
+<link rel="stylesheet" href="./incoming.css">
+<style>
+  body { font-family: system-ui, "Segoe UI", Arial, sans-serif; margin: 0; padding: 16px; background: #f4f2ef; color: #1d1d1d; }
+  main { max-inline-size: 760px; margin-inline: auto; display: grid; gap: 12px; }
+  h1 { font-size: 20px; margin: 0; } p { margin: 0; color: #555; }
+  .bar { display: flex; gap: 8px; flex-wrap: wrap; }
+  .bar button { min-block-size: 44px; padding-inline: 14px; font: inherit; border: 1px solid #555; border-radius: 8px; background: #fff; cursor: pointer; }
+  #screen { background: #fff; border: 1px solid #e0ddd6; border-radius: 10px; padding: 14px; min-block-size: 80px; }
+</style>
+</head>
+<body>
+<main>
+  <h1>«מנעולן 24» — שירות מנעולנות בדוי</h1>
+  <p>לחצו על אחד הכפתורים: משהו נכנס, וכל פעולה פותחת את המסך שלה.</p>
+  <div class="bar">
+    <button type="button" id="call">שיחה נכנסת</button>
+    <button type="button" id="order">הזמנה מהאתר</button>
+    <button type="button" id="lead">ליד מפייסבוק</button>
+  </div>
+  <div id="screen">המסך הפתוח: לוח העבודות של היום.</div>
+</main>
+<script type="module">
+  import { createIncoming } from "./incoming.js";
+  const inc = createIncoming();
+  const screen = document.getElementById("screen");
+  const open = (what) => (r) => { screen.textContent = r === "dismiss" || r === "timeout" ? "ההתראה נסגרה — היא נשמרה ברשימת הפניות." : `נפתח: ${what(r)}`; };
+  document.getElementById("call").onclick = () => inc.show({ kind: "call", title: "רינה גבאי", detail: "ננעלה מחוץ לדירה, רח׳ הדקל 14", meta: "לקוחה קיימת · ביקור אחרון לפני 8 חודשים",
+    actions: [{ id: "answer", label: "מענה", primary: true }, { id: "sms", label: "הודעה: אחזור בעוד 5 דק׳" }] }).then(open((r) => r === "answer" ? "כרטיס הלקוחה עם השיחה פתוחה" : "הודעה נשלחה (מקומית)"));
+  document.getElementById("order").onclick = () => inc.show({ kind: "order", title: "החלפת צילינדר — 2 דלתות", detail: "מועד מבוקש: מחר בין 09:00 ל־11:00", meta: "₪480 · שולם מקדמה", actions: [{ id: "accept", label: "שיבוץ טכנאי", primary: true }] }).then(open(() => "לוח השיבוץ על מחר בבוקר"));
+  document.getElementById("lead").onclick = () => inc.show({ kind: "lead", title: "אסף רוזן", detail: "מבקש הצעת מחיר לכספת ביתית", timeoutMs: 15000 }).then(open(() => "כרטיס הליד"));
+</script>
+<script type="application/json" id="verify">[{"click": "#call"}, {"waitFor": ".inc__card--call.is-in"}, {"text": [".inc__title", "רינה גבאי"]}, {"click": ".inc__card--call [data-inc-act=answer]"}, {"text": ["#screen", "כרטיס הלקוחה"]}, {"count": [".inc__card", 0]}, {"click": "#order"}, {"count": [".inc__card", 1]}]</script>
+</body>
+</html>

@@ -1,0 +1,33 @@
+<!doctype html>
+<html lang="he" dir="rtl">
+<head>
+<meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
+<title>said-and-built · דוגמה</title>
+<link rel="stylesheet" href="./said-and-built.css">
+<style>
+  body { font-family: system-ui, "Segoe UI", Arial, sans-serif; margin: 0; padding: 16px; background: #faf8f4; color: #1d1d1d; }
+  main { max-inline-size: 1100px; margin-inline: auto; display: grid; gap: 16px; }
+  #screen { background: #fff; border: 2px solid #1d1d1d; border-radius: 10px; padding: 14px; }
+</style>
+</head>
+<body>
+<main>
+  <div id="said"></div>
+  <div id="screen" tabindex="-1">כאן נפתח המסך שעונה על המשפט.</div>
+</main>
+<script type="module">
+  import { createSaidAndBuilt } from "./said-and-built.js";
+  const screen = document.getElementById("screen");
+  createSaidAndBuilt(document.getElementById("said"), {
+    intro: "מהשיחה שלנו — סטודיו הקרמיקה «אבנית» (עסק בדוי).", seenKey: "example-saidb",
+    open: (it) => { screen.textContent = `נפתח המסך: ${it.title}`; screen.focus(); },
+    items: [
+      { id: "kiln", quote: "אני אף פעם לא יודעת מה נמצא עכשיו בתנור ומתי הוא יוצא.", who: "בעלת הסטודיו", title: "לוח התנורים", body: "כל תנור, מה בתוכו, באיזו טמפרטורה, ומתי הוא נפתח. התראה כשסבב נגמר.", cta: "לפתוח את לוח התנורים" },
+      { id: "classes", quote: "חצי מהטלפונים הם אנשים ששואלים אם יש מקום בסדנה של חמישי.", who: "בעלת הסטודיו", title: "הסדנאות והמקומות", body: "כמה מקומות נשארו בכל סדנה, ורשימת המתנה שנפתחת לבד כשמישהו מבטל.", cta: "לראות את הסדנאות" },
+      { id: "orders", quote: "הזמנות של מסעדות אני כותבת על פתק ליד הקופה.", who: "מנהלת הייצור", title: "הזמנות עסקיות", body: "כל הזמנה עם הכמות, הזיגוג ותאריך המסירה — וכמה כבר נשרפו.", cta: "להזמנות" },
+    ],
+  });
+</script>
+<script type="application/json" id="verify">[{"count": [".saidb__item", 3]}, {"click": "[data-saidb-id=classes] [data-saidb-go]"}, {"text": ["#screen", "הסדנאות והמקומות"]}, {"countMin": [".saidb__item.is-seen", 1]}]</script>
+</body>
+</html>

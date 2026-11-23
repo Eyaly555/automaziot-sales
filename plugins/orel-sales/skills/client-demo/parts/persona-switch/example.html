@@ -1,0 +1,37 @@
+<!doctype html>
+<html lang="he" dir="rtl">
+<head>
+<meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
+<title>persona-switch · דוגמה</title>
+<link rel="stylesheet" href="./persona-switch.css">
+<style>
+  body { font-family: system-ui, "Segoe UI", Arial, sans-serif; margin: 0; padding: 16px; background: #f5f5f3; color: #1d1d1d; }
+  main { max-inline-size: 980px; margin-inline: auto; display: grid; gap: 16px; }
+  header { display: flex; justify-content: space-between; align-items: center; gap: 10px; flex-wrap: wrap; }
+  h1 { font-size: 20px; margin: 0; }
+  #home { background: #fff; border: 1px solid #ddd; border-radius: 10px; padding: 14px; }
+  #home a { display: inline-flex; align-items: center; min-block-size: 44px; }
+</style>
+</head>
+<body>
+<main>
+  <header><h1>«שוק פתוח» — רשת ירקנויות בדויה</h1><div id="chip"></div></header>
+  <div id="tiles"></div>
+  <section id="home">בחרו מי נכנס.</section>
+</main>
+<script type="module">
+  import { createPersonas, mountPersonaTiles, mountPersonaChip } from "./persona-switch.js";
+  const ps = createPersonas({ key: "example-personas", personas: [
+    { id: "owner", name: "דורית קורן", role: "בעלים", home: "#/today", note: "פדיון, חוסרים, מה דורש החלטה" },
+    { id: "buyer", name: "סאמר חורי", role: "קניין", home: "#/orders", note: "הזמנות לספקים למחר בבוקר" },
+    { id: "shift", name: "ליאת דהן", role: "מנהלת משמרת", home: "#/shift", note: "המשמרת, המשלוחים, הקופות" },
+  ] });
+  mountPersonaTiles(document.getElementById("tiles"), ps);
+  mountPersonaChip(document.getElementById("chip"), ps);
+  const home = document.getElementById("home");
+  const paint = () => { const p = ps.current(); if (!p) return; home.innerHTML = `<b>היום של ${p.name}</b> — ${p.note}.<br>קישור שנפתח בתור ${p.name}: <a href="${ps.link("#/orders/42")}">${ps.link("#/orders/42")}</a>`; };
+  ps.on("change", paint); paint();
+</script>
+<script type="application/json" id="verify">[{"click": ".pers__tile[data-pers=buyer]"}, {"text": ["#home", "היום של סאמר חורי"]}, {"text": [".pers-chip__btn", "סאמר חורי"]}, {"click": ".pers-chip__btn"}, {"click": ".pers-chip__menu [data-pers=shift]"}, {"text": ["#home", "as=shift"]}]</script>
+</body>
+</html>

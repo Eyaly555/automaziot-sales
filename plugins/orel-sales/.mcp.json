@@ -1,0 +1,9 @@
+{
+  "mcpServers": {
+    "crm": {
+      "type": "http",
+      "url": "${OREL_SALES_MCP_URL:-https://contracts.automaziot.ai/api/sales/mcp}",
+      "headers": { "Authorization": "Bearer ${user_config.api_token}" }
+    }
+  }
+}

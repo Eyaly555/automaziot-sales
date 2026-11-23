@@ -1,0 +1,42 @@
+<!doctype html>
+<html lang="he" dir="rtl">
+<head>
+<meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
+<title>drill · דוגמה</title>
+<link rel="stylesheet" href="./drill.css">
+<style>
+  body { font-family: system-ui, "Segoe UI", Arial, sans-serif; margin: 0; padding: 16px; background: #f3f3f0; color: #1d1d1d; }
+  main { max-inline-size: 900px; margin-inline: auto; display: grid; gap: 12px; }
+  h1 { font-size: 20px; margin: 0; } p { margin: 0; color: #555; }
+  .kpis { display: grid; grid-template-columns: repeat(auto-fit, minmax(160px, 1fr)); gap: 10px; }
+  .kpi { background: #fff; border: 1px solid #ddd; border-radius: 10px; padding: 12px; display: grid; gap: 4px; }
+  .kpi b { font-size: 30px; justify-self: start; min-block-size: 44px; min-inline-size: 44px; } #opened { color: #333; }
+</style>
+</head>
+<body>
+<main>
+  <h1>«אולפן אורה» — סטודיו צילום בדוי: החודש</h1>
+  <p>כל מספר נפתח לשורות שמרכיבות אותו.</p>
+  <div class="kpis" id="kpis"></div>
+  <p id="opened"></p>
+</main>
+<script type="module">
+  import { makeDrillable } from "./drill.js";
+  const shoots = [
+    { who: "משפחת שטרן", kind: "משפחה", date: "02/03", sum: 1800, paid: true }, { who: "חתונה — ענבל ועוז", kind: "חתונה", date: "05/03", sum: 9500, paid: false },
+    { who: "מוצרים — חנות התה", kind: "מוצר", date: "08/03", sum: 2400, paid: false }, { who: "בר מצווה — נתנאל", kind: "אירוע", date: "11/03", sum: 4200, paid: true },
+    { who: "תדמית — משרד ייעוץ", kind: "עסקי", date: "14/03", sum: 3100, paid: false },
+  ];
+  const Q = { all: () => shoots, unpaid: () => shoots.filter((s) => !s.paid) };
+  const money = (n) => "₪" + n.toLocaleString("he-IL");
+  document.getElementById("kpis").innerHTML = `<div class="kpi">צילומים החודש<b data-drill="all">${Q.all().length}</b></div><div class="kpi">ממתינים לתשלום<b data-drill="unpaid">${Q.unpaid().length}</b></div><div class="kpi">יתרה פתוחה<b data-drill="unpaid-sum">${money(Q.unpaid().reduce((t, s) => t + s.sum, 0))}</b></div>`;
+  makeDrillable(document.getElementById("kpis"), { check: true, resolve: (key) => {
+    const rows = key === "all" ? Q.all() : Q.unpaid();
+    return { title: { all: "כל הצילומים החודש", unpaid: "ממתינים לתשלום", "unpaid-sum": "היתרה הפתוחה" }[key], note: key === "all" ? "" : "צילום שעוד לא שולם במלואו",
+      rows, columns: [["לקוח", "who"], ["סוג", "kind"], ["תאריך", "date"], ["סכום", (r) => money(r.sum), "end"]],
+      total: key === "unpaid-sum" ? (r) => r.sum : null, onRow: (r) => { document.getElementById("opened").textContent = `נפתח התיק: ${r.who}`; } };
+  } });
+</script>
+<script type="application/json" id="verify">[{"click": "[data-drill=unpaid]"}, {"text": [".drill__title", "ממתינים לתשלום"]}, {"text": [".drill__count", "3"]}, {"count": [".drill tbody tr", 3]}, {"click": ".drill tbody tr"}, {"text": ["#opened", "חתונה"]}, {"count": [".drill", 0]}]</script>
+</body>
+</html>

@@ -1,0 +1,44 @@
+<!doctype html>
+<html lang="he" dir="rtl">
+<head>
+<meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
+<title>view-controls · דוגמה</title>
+<link rel="stylesheet" href="./view-controls.css">
+<style>
+  body { font-family: system-ui, "Segoe UI", Arial, sans-serif; margin: 0; padding: 16px; background: #f4f3ef; color: #1d1d1d; }
+  main { max-inline-size: 980px; margin-inline: auto; display: grid; gap: 12px; }
+  h1 { font-size: 20px; margin: 0; }
+  ul { list-style: none; margin: 0; padding: 0; display: grid; gap: 6px; }
+  li { background: #fff; border: 1px solid #ddd; border-radius: 8px; padding: 8px 12px; display: flex; justify-content: space-between; gap: 8px; flex-wrap: wrap; }
+  li.late { border-inline-start: 4px solid #c0392b; }
+</style>
+</head>
+<body>
+<main>
+  <h1>«גג פתוח» — קבלן איטום בדוי: הצעות מחיר</h1>
+  <div id="bar"></div>
+  <ul id="list"></ul>
+</main>
+<script type="module">
+  import { createView, mountViewBar } from "./view-controls.js";
+  const NOW = new Date("2026-03-04T10:00:00"), d = (n) => new Date(NOW - n * 864e5);
+  const rows = [
+    ["גג רעפים, 120 מ״ר", "צפון", 18400, 1, false], ["מרפסת שמש", "מרכז", 6200, 2, true], ["חדר מדרגות", "מרכז", 9800, 4, false],
+    ["גג בטון, מחסן", "דרום", 31000, 6, true], ["קיר חיצוני", "צפון", 4300, 9, false], ["בריכה", "מרכז", 22500, 15, true],
+    ["גג רעפים, וילה", "שרון", 15700, 20, false], ["מרתף", "שרון", 12900, 40, true],
+  ].map(([what, area, sum, ago, late]) => ({ what, area, sum, at: d(ago), late }));
+  const spec = {
+    now: () => NOW,
+    time: { get: (r) => r.at, options: [["7d", "7 ימים"], ["month", "החודש"], ["30d", "30 ימים"], ["all", "הכול"]], value: "30d" },
+    facets: [{ id: "area", label: "אזור", get: (r) => r.area }],
+    flags: [{ id: "late", label: "ממתינות לתשובה", test: (r) => r.late }],
+    sort: [{ id: "new", label: "החדשות קודם", by: (a, b) => b.at - a.at }, { id: "big", label: "מהגבוה לנמוך", by: (a, b) => b.sum - a.sum }],
+  };
+  const view = createView(spec, { key: "quotes", persist: null });
+  mountViewBar(document.getElementById("bar"), view, spec, () => rows);
+  const paint = () => { document.getElementById("list").innerHTML = view.apply(rows).map((r) => `<li class="${r.late ? "late" : ""}" data-row><span>${r.what} · ${r.area}</span><b>₪${r.sum.toLocaleString("he-IL")}</b></li>`).join(""); };
+  view.on("change", paint); paint();
+</script>
+<script type="application/json" id="verify">[{"count": ["[data-row]", 7]}, {"click": "[data-vbar-time=all]"}, {"count": ["[data-row]", 8]}, {"click": "[data-vbar-f=area][data-vbar-v=מרכז]"}, {"count": ["[data-row]", 3]}, {"focused": "[data-vbar-f=area][data-vbar-v=מרכז]"}, {"click": "[data-vbar-flag=late]"}, {"count": ["[data-row]", 2]}, {"text": [".vbar__say", "מרכז"]}, {"click": "[data-vbar-reset]"}, {"count": ["[data-row]", 7]}]</script>
+</body>
+</html>
